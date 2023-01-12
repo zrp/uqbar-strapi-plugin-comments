@@ -2,19 +2,19 @@
  * NoAcccessPage
  *
  * This is the page we show when the user do not have appropriate credentials
- * 
+ *
  */
 
 // TODO
 // @ts-nocheck
 
-import React from 'react';
-import { useFocusWhenNavigate, LinkButton } from '@strapi/helper-plugin';
-import { Main } from '@strapi/design-system/Main';
-import { ContentLayout, HeaderLayout } from '@strapi/design-system/Layout';
-import { EmptyStateLayout } from '@strapi/design-system/EmptyStateLayout';
-import { emptyPictures, arrowRight } from '../../components/icons';
-import { useIntl } from 'react-intl';
+import React from "react";
+import { useFocusWhenNavigate, LinkButton } from "@strapi/helper-plugin";
+import { Main } from "@strapi/design-system/Main";
+import { ContentLayout, HeaderLayout } from "@strapi/design-system/Layout";
+import { EmptyStateLayout } from "@strapi/design-system/EmptyStateLayout";
+import { emptyPictures, arrowRight } from "../../components/icons";
+import { useIntl } from "react-intl";
 
 const NoAcccessPage = () => {
   const { formatMessage } = useIntl();
@@ -25,8 +25,8 @@ const NoAcccessPage = () => {
       <HeaderLayout
         id="title"
         title={formatMessage({
-          id: 'page.auth.noAccess',
-          defaultMessage: 'No access',
+          id: "page.auth.noAccess",
+          defaultMessage: "No access",
         })}
       />
       <ContentLayout>
@@ -34,14 +34,15 @@ const NoAcccessPage = () => {
           action={
             <LinkButton variant="secondary" endIcon={arrowRight} to="/">
               {formatMessage({
-                id: 'components.notAccessPage.back',
-                defaultMessage: 'Back to homepage',
+                id: "components.notAccessPage.back",
+                defaultMessage: "Back to homepage",
               })}
             </LinkButton>
           }
           content={formatMessage({
-            id: 'page.auth.not.allowed',
-            defaultMessage: "Oops! It seems like You do not have access to this page...",
+            id: "page.auth.not.allowed",
+            defaultMessage:
+              "Oops! It seems like You do not have access to this page...",
           })}
           hasRadius
           icon={emptyPictures}

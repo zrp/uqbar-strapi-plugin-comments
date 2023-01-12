@@ -112,17 +112,17 @@ export interface IServiceAdmin {
   getCommonService(): IServiceCommon;
   config<T extends AnyConfig>(viaSettingsPage?: boolean): Promise<T>;
   updateConfig(
-    body: SettingsCommentsPluginConfig | undefined,
+    body: SettingsCommentsPluginConfig | undefined
   ): Promise<SettingsCommentsPluginConfig>;
   restoreConfig(): Promise<SettingsCommentsPluginConfig>;
   restart(): void;
   findAll(props: AdminFindAllProps): Promise<AdminPaginatedResponse<Comment>>;
   findReports(
-    props: AdminFindAllProps,
+    props: AdminFindAllProps
   ): Promise<AdminPaginatedResponse<Comment>>;
   findOneAndThread(
     id: Id,
-    props: AdminFindOneAndThreadProps,
+    props: AdminFindOneAndThreadProps
   ): Promise<AdminSinglePageResponse>;
   blockComment(id: Id, forceStatus?: boolean): Promise<Comment>;
   deleteComment(id: Id): Promise<Comment>;
@@ -133,24 +133,28 @@ export interface IServiceAdmin {
   resolveAbuseReport(id: Id, commentId: Id): Promise<CommentReport>;
   resolveCommentMultipleAbuseReports(
     ids: Array<Id>,
-    commentId: Id,
+    commentId: Id
   ): Promise<StrapiDBBulkActionResponse>;
   resolveAllAbuseReportsForComment(
     this: IServiceAdmin,
-    commentId: Id,
+    commentId: Id
   ): Promise<StrapiDBBulkActionResponse>;
   resolveAllAbuseReportsForThread(
     this: IServiceAdmin,
-    commentId: Id,
+    commentId: Id
   ): Promise<StrapiDBBulkActionResponse>;
   resolveMultipleAbuseReports(
     this: IServiceAdmin,
-    ids: Array<Id>,
+    ids: Array<Id>
   ): Promise<StrapiDBBulkActionResponse>;
   getDefaultAuthorPopulate():
     | { populate: PopulateClause<"avatar"> }
     | undefined;
-  postComment(threadId: Id, body: string, author: StrapiAdminUser): Promise<Comment>;
+  postComment(
+    threadId: Id,
+    body: string,
+    author: StrapiAdminUser
+  ): Promise<Comment>;
   updateComment(id: Id, body: string): Promise<Comment>;
 }
 
@@ -181,7 +185,7 @@ export interface IServiceClient {
   ): Promise<Comment>;
   sendAbuseReportEmail(reason: string, content: string): Promise<void>;
   markAsRemovedNested(id: Id, status: boolean): Promise<boolean>;
-  sendResponseNotification(entity: Comment): Promise<void>
+  sendResponseNotification(entity: Comment): Promise<void>;
 }
 
 export interface IServiceGraphQL {

@@ -4,35 +4,34 @@
  *
  */
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 //@ts-ignore
-import styled, {ThemeInterface} from 'styled-components';
-import { useIntl } from 'react-intl';
+import styled, { ThemeInterface } from "styled-components";
+import { useIntl } from "react-intl";
 //@ts-ignore
-import { Typography } from '@strapi/design-system/Typography';
+import { Typography } from "@strapi/design-system/Typography";
 //@ts-ignore
-import { Box } from '@strapi/design-system/Box';
+import { Box } from "@strapi/design-system/Box";
 //@ts-ignore
-import { Stack } from '@strapi/design-system/Stack';
+import { Stack } from "@strapi/design-system/Stack";
 //@ts-ignore
-import { prefixFileUrlWithBackendUrl, useLibrary } from '@strapi/helper-plugin';
-import Editor from './Editor';
-import WysiwygNav from './WysiwygNav';
-import WysiwygFooter from './WysiwygFooter';
-import Hint from '../Hint';
+import { prefixFileUrlWithBackendUrl, useLibrary } from "@strapi/helper-plugin";
+import Editor from "./Editor";
+import WysiwygNav from "./WysiwygNav";
+import WysiwygFooter from "./WysiwygFooter";
+import Hint from "../Hint";
 import {
   markdownHandler,
   listHandler,
   titleHandler,
   insertFile,
   quoteAndCodeHandler,
-} from './utils/utils';
-import { EditorLayout } from './EditorLayout';
-
+} from "./utils/utils";
+import { EditorLayout } from "./EditorLayout";
 
 const LabelAction = styled(Box)`
   svg path {
-    fill: ${({ theme }:ThemeInterface) => theme.colors.neutral500};
+    fill: ${({ theme }: ThemeInterface) => theme.colors.neutral500};
   }
 `;
 
@@ -41,28 +40,28 @@ const TypographyAsterisk = styled(Typography)`
 `;
 
 type WysiwygProps = {
-  description?:{
-    id: string,
-    defaultMessage: string,
-    values: {},
-  },
-  disabled?: boolean,
-  error?: string,
-  intlLabel:{
-    id: string,
-    defaultMessage: string,
-    values: {},
-  },
-  labelAction?: JSX.Element,
-  name: string,
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  description?: {
+    id: string;
+    defaultMessage: string;
+    values: {};
+  };
+  disabled?: boolean;
+  error?: string;
+  intlLabel: {
+    id: string;
+    defaultMessage: string;
+    values: {};
+  };
+  labelAction?: JSX.Element;
+  name: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: {
-    id: string,
-    defaultMessage: string,
-    values: {},
-  },
-  required?: boolean,
-  value: string,
+    id: string;
+    defaultMessage: string;
+    values: {};
+  };
+  required?: boolean;
+  value: string;
 };
 
 const Wysiwyg: React.FC<WysiwygProps> = ({
@@ -85,47 +84,51 @@ const Wysiwyg: React.FC<WysiwygProps> = ({
   const [isExpandMode, setIsExpandMode] = useState<boolean>(false);
   const { components } = useLibrary();
 
-  const MediaLibraryDialog = components['media-library'];
+  const MediaLibraryDialog = components["media-library"];
 
-  const handleToggleMediaLib = () => setMediaLibVisible(prev => !prev);
-  const handleTogglePreviewMode = () => setIsPreviewMode(prev => !prev);
+  const handleToggleMediaLib = () => setMediaLibVisible((prev) => !prev);
+  const handleTogglePreviewMode = () => setIsPreviewMode((prev) => !prev);
   const handleToggleExpand = () => {
     setIsPreviewMode(false);
-    setIsExpandMode(prev => !prev);
+    setIsExpandMode((prev) => !prev);
   };
 
-  const handleActionClick = ( value:string, currentEditorRef:string, togglePopover: ()=>void ) => {
+  const handleActionClick = (
+    value: string,
+    currentEditorRef: string,
+    togglePopover: () => void
+  ) => {
     switch (value) {
-      case 'Link':
-      case 'Strikethrough': {
+      case "Link":
+      case "Strikethrough": {
         markdownHandler(currentEditorRef, value);
         togglePopover();
         break;
       }
-      case 'Code':
-      case 'Quote': {
+      case "Code":
+      case "Quote": {
         quoteAndCodeHandler(currentEditorRef, value);
         togglePopover();
         break;
       }
-      case 'Bold':
-      case 'Italic':
-      case 'Underline': {
+      case "Bold":
+      case "Italic":
+      case "Underline": {
         markdownHandler(currentEditorRef, value);
         break;
       }
-      case 'BulletList':
-      case 'NumberList': {
+      case "BulletList":
+      case "NumberList": {
         listHandler(currentEditorRef, value);
         togglePopover();
         break;
       }
-      case 'h1':
-      case 'h2':
-      case 'h3':
-      case 'h4':
-      case 'h5':
-      case 'h6': {
+      case "h1":
+      case "h2":
+      case "h3":
+      case "h4":
+      case "h5":
+      case "h6": {
         titleHandler(currentEditorRef, value);
         break;
       }
@@ -136,7 +139,7 @@ const Wysiwyg: React.FC<WysiwygProps> = ({
   };
 
   const handleSelectAssets = (files: any) => {
-    const formattedFiles = files.map((f:any) => ({
+    const formattedFiles = files.map((f: any) => ({
       alt: f.alternativeText || f.name,
       url: prefixFileUrlWithBackendUrl(f.url),
       mime: f.mime,
@@ -151,7 +154,7 @@ const Wysiwyg: React.FC<WysiwygProps> = ({
         { id: placeholder.id, defaultMessage: placeholder.defaultMessage },
         { ...placeholder.values }
       )
-    : '';
+    : "";
 
   const label = intlLabel.id
     ? formatMessage(
@@ -166,9 +169,13 @@ const Wysiwyg: React.FC<WysiwygProps> = ({
         <Stack horizontal spacing={1}>
           <Typography variant="pi" fontWeight="bold" textColor="neutral800">
             {label}
-            {required && <TypographyAsterisk textColor="danger600">*</TypographyAsterisk>}
+            {required && (
+              <TypographyAsterisk textColor="danger600">*</TypographyAsterisk>
+            )}
           </Typography>
-          {labelAction && <LabelAction paddingLeft={1}>{labelAction}</LabelAction>}
+          {labelAction && (
+            <LabelAction paddingLeft={1}>{labelAction}</LabelAction>
+          )}
         </Stack>
 
         <EditorLayout
@@ -183,7 +190,9 @@ const Wysiwyg: React.FC<WysiwygProps> = ({
             isPreviewMode={isPreviewMode}
             onActionClick={handleActionClick}
             onToggleMediaLib={handleToggleMediaLib}
-            onTogglePreviewMode={isExpandMode ? undefined : handleTogglePreviewMode}
+            onTogglePreviewMode={
+              isExpandMode ? undefined : handleTogglePreviewMode
+            }
             disabled={disabled}
           />
 
@@ -200,28 +209,31 @@ const Wysiwyg: React.FC<WysiwygProps> = ({
             value={value}
           />
 
-          {!isExpandMode && <WysiwygFooter onToggleExpand={handleToggleExpand} />}
+          {!isExpandMode && (
+            <WysiwygFooter onToggleExpand={handleToggleExpand} />
+          )}
         </EditorLayout>
 
-        <Hint 
-          description={description} 
-          name={name} 
-          error={error}
-          id={name} 
-        />
-
+        <Hint description={description} name={name} error={error} id={name} />
       </Stack>
 
       {error && (
         <Box paddingTop={1}>
-          <Typography variant="pi" textColor="danger600" data-strapi-field-error>
+          <Typography
+            variant="pi"
+            textColor="danger600"
+            data-strapi-field-error
+          >
             {error}
           </Typography>
         </Box>
       )}
 
       {mediaLibVisible && (
-        <MediaLibraryDialog onClose={handleToggleMediaLib} onSelectAssets={handleSelectAssets} />
+        <MediaLibraryDialog
+          onClose={handleToggleMediaLib}
+          onSelectAssets={handleSelectAssets}
+        />
       )}
     </>
   );

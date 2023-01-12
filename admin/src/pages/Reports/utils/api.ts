@@ -11,8 +11,8 @@ export const fetchReportsData = async (queryParams, toggleNotification) => {
       getApiURL(
         `moderate/reports${
           queryParams ? `?${stringify(queryParams, { encode: false })}` : ""
-        }`,
-      ),
+        }`
+      )
     );
 
     return data;

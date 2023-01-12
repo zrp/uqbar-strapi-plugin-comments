@@ -6,7 +6,7 @@
 
 // @ts-nocheck
 
-import CodeMirror from 'codemirror';
+import CodeMirror from "codemirror";
 
 // Disabling eslint on purpose
 /* eslint-disable */
@@ -25,7 +25,7 @@ var listRE = /^(\s*)(>[> ]*|[*+-] \[[x ]\]\s|[*+-]\s|(\d+)([.)]))(\s*)/,
 */
 
 function newlineAndIndentContinueMarkdownList(cm) {
-  if (cm.getOption('disableInput')) return CodeMirror.Pass;
+  if (cm.getOption("disableInput")) return CodeMirror.Pass;
   var ranges = cm.listSelections(),
     replacements = [];
   for (var i = 0; i < ranges.length; i++) {
@@ -38,8 +38,13 @@ function newlineAndIndentContinueMarkdownList(cm) {
     var line = cm.getLine(pos.line),
       match = listRE.exec(line);
     var cursorBeforeBullet = /^\s*$/.test(line.slice(0, pos.ch));
-    if (!ranges[i].empty() || (!inList && !inQuote) || !match || cursorBeforeBullet) {
-      cm.execCommand('newlineAndIndent');
+    if (
+      !ranges[i].empty() ||
+      (!inList && !inQuote) ||
+      !match ||
+      cursorBeforeBullet
+    ) {
+      cm.execCommand("newlineAndIndent");
       return;
     }
     if (emptyListRE.test(line)) {
@@ -47,7 +52,7 @@ function newlineAndIndentContinueMarkdownList(cm) {
       var endOfList = !/>\s*$/.test(line);
       if (endOfQuote || endOfList)
         cm.replaceRange(
-          '',
+          "",
           {
             line: pos.line,
             ch: 0,
@@ -57,13 +62,17 @@ function newlineAndIndentContinueMarkdownList(cm) {
             ch: pos.ch + 1,
           }
         );
-      replacements[i] = '\n';
+      replacements[i] = "\n";
     } else {
       var indent = match[1],
         after = match[5];
-      var numbered = !(unorderedListRE.test(match[2]) || match[2].indexOf('>') >= 0);
-      var bullet = numbered ? parseInt(match[3], 10) + 1 + match[4] : match[2].replace('x', ' ');
-      replacements[i] = '\n' + indent + bullet + after;
+      var numbered = !(
+        unorderedListRE.test(match[2]) || match[2].indexOf(">") >= 0
+      );
+      var bullet = numbered
+        ? parseInt(match[3], 10) + 1 + match[4]
+        : match[2].replace("x", " ");
+      replacements[i] = "\n" + indent + bullet + after;
 
       if (numbered) incrementRemainingMarkdownListNumbers(cm, pos);
     }
@@ -95,7 +104,10 @@ function incrementRemainingMarkdownListNumbers(cm, pos) {
         if (newNumber === nextNumber) itemNumber = nextNumber + 1;
         if (newNumber > nextNumber) itemNumber = newNumber + 1;
         cm.replaceRange(
-          nextLine.replace(listRE, nextIndent + itemNumber + nextItem[4] + nextItem[5]),
+          nextLine.replace(
+            listRE,
+            nextIndent + itemNumber + nextItem[4] + nextItem[5]
+          ),
           {
             line: nextLineNumber,
             ch: 0,

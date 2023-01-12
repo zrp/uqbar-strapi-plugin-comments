@@ -58,7 +58,10 @@ describe("Test Comments service - Admin", () => {
     },
   ];
   const relatedEntity = { id: 1, title: "Test", uid: collection };
-  const newCommentEntity = { approvalStatus: APPROVAL_STATUS.APPROVED, related }
+  const newCommentEntity = {
+    approvalStatus: APPROVAL_STATUS.APPROVED,
+    related,
+  };
   const reportEntity = {
     id: 1,
     related: db[0].id,
@@ -131,15 +134,15 @@ describe("Test Comments service - Admin", () => {
         expect(result).toHaveProperty(["regex", "email"], "/\\S+@\\S+\\.\\S+/");
         expect(result).toHaveProperty(
           ["regex", "relatedUid"],
-          "/^(?<uid>[a-z0-9-]+\\:{2}[a-z0-9-]+\\.[a-z0-9-]+)\\:{1}(?<id>[a-z0-9-]+)$/i",
+          "/^(?<uid>[a-z0-9-]+\\:{2}[a-z0-9-]+\\.[a-z0-9-]+)\\:{1}(?<id>[a-z0-9-]+)$/i"
         );
         expect(result).toHaveProperty(
           ["regex", "sorting"],
-          "/^(?<path>[a-z0-9-_\\:\\.]+)\\:+(asc|desc)$/i",
+          "/^(?<path>[a-z0-9-_\\:\\.]+)\\:+(asc|desc)$/i"
         );
         expect(result).toHaveProperty(
           ["regex", "uid"],
-          "/^(?<type>[a-z0-9-]+)\\:{2}(?<api>[a-z0-9-]+)\\.{1}(?<contentType>[a-z0-9-]+)$/i",
+          "/^(?<type>[a-z0-9-]+)\\:{2}(?<api>[a-z0-9-]+)\\.{1}(?<contentType>[a-z0-9-]+)$/i"
         );
       };
 
@@ -152,21 +155,21 @@ describe("Test Comments service - Admin", () => {
                 relatedEntity,
                 { id: 2, title: "Test 2", uid: collection },
               ],
-            }),
+            })
           );
 
           test("Moderation panel", async () => {
             const result = await getPluginService<IServiceAdmin>(
-              "admin",
+              "admin"
             ).config();
 
             expect(result).toHaveProperty(
               ["approvalFlow", 0],
-              "api::blog-post.blog-post",
+              "api::blog-post.blog-post"
             );
             expect(result).toHaveProperty(
               ["entryLabel", "api::blog-post.blog-post", 0],
-              "alternative_subject",
+              "alternative_subject"
             );
             expect(result).toHaveProperty("isGQLPluginEnabled", undefined);
             expectRegex(result);
@@ -175,16 +178,16 @@ describe("Test Comments service - Admin", () => {
 
           test("Settings page", async () => {
             const result = await getPluginService<IServiceAdmin>(
-              "admin",
+              "admin"
             ).config(true);
 
             expect(result).toHaveProperty(
               ["approvalFlow", 0],
-              "api::blog-post.blog-post",
+              "api::blog-post.blog-post"
             );
             expect(result).toHaveProperty(
               ["entryLabel", "api::blog-post.blog-post", 0],
-              "alternative_subject",
+              "alternative_subject"
             );
             expect(result).toHaveProperty("isGQLPluginEnabled", true);
             expect(result).toHaveProperty("moderatorRoles");
@@ -207,18 +210,18 @@ describe("Test Comments service - Admin", () => {
                   relatedEntity,
                   { id: 2, title: "Test 2", uid: collection },
                 ],
-              },
-            ),
+              }
+            )
           );
 
           test("Moderation panel", async () => {
             const result = await getPluginService<IServiceAdmin>(
-              "admin",
+              "admin"
             ).config();
 
             expect(result).toHaveProperty(
               ["enabledCollections", 0],
-              collection,
+              collection
             );
             expect(result).toHaveProperty(["moderatorRoles", 0], "editor");
             expect(result).toHaveProperty("isGQLPluginEnabled", undefined);
@@ -228,12 +231,12 @@ describe("Test Comments service - Admin", () => {
 
           test("Settings page", async () => {
             const result = await getPluginService<IServiceAdmin>(
-              "admin",
+              "admin"
             ).config(true);
 
             expect(result).toHaveProperty(
               ["enabledCollections", 0],
-              collection,
+              collection
             );
             expect(result).toHaveProperty("isGQLPluginEnabled", true);
             expect(result).toHaveProperty(["moderatorRoles", 0], "editor");
@@ -258,8 +261,8 @@ describe("Test Comments service - Admin", () => {
                 relatedEntity,
                 { id: 2, title: "Test 2", uid: collection },
               ],
-            },
-          ),
+            }
+          )
         );
 
         test("Config has been stored", async () => {
@@ -275,16 +278,16 @@ describe("Test Comments service - Admin", () => {
           } as SettingsCommentsPluginConfig;
           await getPluginService<IServiceAdmin>("admin").updateConfig(payload);
           const result = await getPluginService<IServiceAdmin>(
-            "admin",
+            "admin"
           ).config();
 
           expect(result).toHaveProperty(
             ["enabledCollections"],
-            payload.enabledCollections,
+            payload.enabledCollections
           );
           expect(result).toHaveProperty(
             ["moderatorRoles", 0],
-            payload.moderatorRoles[0],
+            payload.moderatorRoles[0]
           );
           expect(result).toHaveProperty(["client", "url"], payload.client.url);
           expect(result).toHaveProperty(["gql", "auth"], payload.gql.auth);
@@ -307,23 +310,23 @@ describe("Test Comments service - Admin", () => {
                 relatedEntity,
                 { id: 2, title: "Test 2", uid: collection },
               ],
-            },
-          ),
+            }
+          )
         );
 
         test("Config has been restored to default", async () => {
           await getPluginService<IServiceAdmin>("admin").restoreConfig();
           const result = await getPluginService<IServiceAdmin>(
-            "admin",
+            "admin"
           ).config();
 
           expect(result).toHaveProperty(
             ["approvalFlow", 0],
-            "api::blog-post.blog-post",
+            "api::blog-post.blog-post"
           );
           expect(result).toHaveProperty(
             ["entryLabel", "api::blog-post.blog-post", 0],
-            "alternative_subject",
+            "alternative_subject"
           );
           expect(result).not.toHaveProperty("moderatorRoles");
         });
@@ -338,7 +341,7 @@ describe("Test Comments service - Admin", () => {
             relatedEntity,
             { id: 2, title: "Test 2", uid: collection },
           ],
-        }),
+        })
       );
 
       test("Should return all the comments in proper pagination format", async () => {
@@ -382,7 +385,7 @@ describe("Test Comments service - Admin", () => {
           }));
 
         const { result, pagination } = await getPluginService<IServiceAdmin>(
-          "admin",
+          "admin"
         ).findAll({});
 
         expect(result.length).toBe(db.length);
@@ -403,7 +406,7 @@ describe("Test Comments service - Admin", () => {
             relatedEntity,
             { id: 2, title: "Test 2", uid: collection },
           ],
-        }),
+        })
       );
 
       test("Should return a thread with all the details", async () => {
@@ -455,7 +458,7 @@ describe("Test Comments service - Admin", () => {
         const { entity, selected, level } =
           await getPluginService<IServiceAdmin>("admin").findOneAndThread(
             idToSelect,
-            {},
+            {}
           );
         expect(entity).toHaveProperty(["uid"], relatedEntity.uid);
         expect(selected).toHaveProperty(["id"], idToSelect);
@@ -473,7 +476,7 @@ describe("Test Comments service - Admin", () => {
             relatedEntity,
             { id: 2, title: "Test 2", uid: collection },
           ],
-        }),
+        })
       );
 
       test("Should mark comment as blocked", async () => {
@@ -501,7 +504,7 @@ describe("Test Comments service - Admin", () => {
               }),
           }));
         const result = await getPluginService<IServiceAdmin>(
-          "admin",
+          "admin"
         ).blockComment(db[0].id);
         expect(result).toHaveProperty(["id"], db[0].id);
         expect(result).toHaveProperty(["blocked"], true);
@@ -537,7 +540,7 @@ describe("Test Comments service - Admin", () => {
               }),
           }));
         const result = await getPluginService<IServiceAdmin>(
-          "admin",
+          "admin"
         ).blockComment(db[0].id);
         expect(result).toHaveProperty(["id"], db[0].id);
         expect(result).toHaveProperty(["blocked"], false);
@@ -570,7 +573,7 @@ describe("Test Comments service - Admin", () => {
               }),
           }));
         const result = await getPluginService<IServiceAdmin>(
-          "admin",
+          "admin"
         ).blockCommentThread(db[0].id);
         expect(result).toHaveProperty(["id"], db[0].id);
         expect(result).toHaveProperty(["blocked"], true);
@@ -608,7 +611,7 @@ describe("Test Comments service - Admin", () => {
               }),
           }));
         const result = await getPluginService<IServiceAdmin>(
-          "admin",
+          "admin"
         ).blockCommentThread(db[0].id);
         expect(result).toHaveProperty(["id"], db[0].id);
         expect(result).toHaveProperty(["blocked"], false);
@@ -626,7 +629,7 @@ describe("Test Comments service - Admin", () => {
             relatedEntity,
             { id: 2, title: "Test 2", uid: collection },
           ],
-        }),
+        })
       );
 
       test("Should approve comment", async () => {
@@ -655,12 +658,12 @@ describe("Test Comments service - Admin", () => {
           }));
 
         const result = await getPluginService<IServiceAdmin>(
-          "admin",
+          "admin"
         ).approveComment(db[0].id);
         expect(result).toHaveProperty(["id"], db[0].id);
         expect(result).toHaveProperty(
           ["approvalStatus"],
-          APPROVAL_STATUS.APPROVED,
+          APPROVAL_STATUS.APPROVED
         );
 
         spy.mockRestore();
@@ -691,12 +694,12 @@ describe("Test Comments service - Admin", () => {
               }),
           }));
         const result = await getPluginService<IServiceAdmin>(
-          "admin",
+          "admin"
         ).rejectComment(db[0].id);
         expect(result).toHaveProperty(["id"], db[0].id);
         expect(result).toHaveProperty(
           ["approvalStatus"],
-          APPROVAL_STATUS.REJECTED,
+          APPROVAL_STATUS.REJECTED
         );
 
         spy.mockRestore();
@@ -712,7 +715,7 @@ describe("Test Comments service - Admin", () => {
             relatedEntity,
             { id: 2, title: "Test 2", uid: collection },
           ],
-        }),
+        })
       );
 
       test("Should return all reports", async () => {
@@ -726,8 +729,8 @@ describe("Test Comments service - Admin", () => {
                   case "plugins::comments.comment":
                     return resolve(
                       db.filter((item) =>
-                        _.where ? isMatch(item, _.where) : true,
-                      ),
+                        _.where ? isMatch(item, _.where) : true
+                      )
                     );
                   case "plugins::comments.comment-report":
                     return resolve(reportsList);
@@ -749,7 +752,7 @@ describe("Test Comments service - Admin", () => {
           }));
 
         const { result } = await getPluginService<IServiceAdmin>(
-          "admin",
+          "admin"
         ).findReports({});
 
         expect(result).toHaveLength(reportsList.length);
@@ -787,7 +790,7 @@ describe("Test Comments service - Admin", () => {
           }));
 
         const result = await getPluginService<IServiceAdmin>(
-          "admin",
+          "admin"
         ).resolveAbuseReport(reportEntity.id, db[0].id);
         expect(result).toHaveProperty(["id"], reportEntity.id);
         expect(result).toHaveProperty(["resolved"], true);
@@ -834,7 +837,7 @@ describe("Test Comments service - Admin", () => {
               }),
           }));
         const result = await getPluginService<IServiceAdmin>(
-          "admin",
+          "admin"
         ).resolveMultipleAbuseReports([reportEntity.id], db[0].id);
         expect(result).toHaveProperty([0, "id"], reportEntity.id);
         expect(result).toHaveProperty([0, "resolved"], true);
@@ -843,9 +846,8 @@ describe("Test Comments service - Admin", () => {
         spy.mockRestore();
       });
     });
-    
-    describe("Modifying comments from moderators panel", () => {
 
+    describe("Modifying comments from moderators panel", () => {
       beforeEach(() =>
         setupStrapi({ enabledCollections: [collection] }, true, {
           "plugins::comments": db,
@@ -860,7 +862,7 @@ describe("Test Comments service - Admin", () => {
         const spy = jest
           .spyOn(global.strapi.db, "query")
           // @ts-ignore
-          .mockImplementation( (type: string) => ({
+          .mockImplementation((type: string) => ({
             findOne: async (_: any) =>
               new Promise((resolve) => {
                 switch (type) {
@@ -872,27 +874,29 @@ describe("Test Comments service - Admin", () => {
                     return resolve(relatedEntity);
                 }
               }),
-            update: async (_: any) => 
+            update: async (_: any) =>
               new Promise((resolve) => {
                 return resolve({
                   ...db[0],
                   ..._.data,
                 });
-              })
+              }),
           }));
 
-          const result = await getPluginService<IServiceAdmin>("admin").deleteComment(db[0].id);
-          expect(result).toHaveProperty(["id"], db[0].id);
-          expect(result).toHaveProperty(["removed"], true);
+        const result = await getPluginService<IServiceAdmin>(
+          "admin"
+        ).deleteComment(db[0].id);
+        expect(result).toHaveProperty(["id"], db[0].id);
+        expect(result).toHaveProperty(["removed"], true);
 
-          spy.mockRestore();
+        spy.mockRestore();
       });
 
       test("Should update comment", async () => {
         const spy = jest
           .spyOn(global.strapi.db, "query")
           // @ts-ignore
-          .mockImplementation( (type: string) => ({
+          .mockImplementation((type: string) => ({
             findOne: async (_: any) =>
               new Promise((resolve) => {
                 switch (type) {
@@ -904,26 +908,27 @@ describe("Test Comments service - Admin", () => {
                     return resolve(relatedEntity);
                 }
               }),
-            update: async (_: any) => 
+            update: async (_: any) =>
               new Promise((resolve) => {
                 return resolve({
                   ...db[0],
                   ..._.data,
                 });
-              })
+              }),
           }));
-         
-        const updatedComment = "Updated Comment";  
-        const result = await getPluginService<IServiceAdmin>("admin").updateComment(db[0].id,updatedComment);
+
+        const updatedComment = "Updated Comment";
+        const result = await getPluginService<IServiceAdmin>(
+          "admin"
+        ).updateComment(db[0].id, updatedComment);
         expect(result).toHaveProperty(["id"], db[0].id);
         expect(result).toHaveProperty(["content"], updatedComment);
 
         spy.mockRestore();
       });
     });
-    
-    describe("Posting comments from moderators panel", () => {
 
+    describe("Posting comments from moderators panel", () => {
       beforeEach(() =>
         setupStrapi({ enabledCollections: [collection] }, true, {
           "plugins::comments": db,
@@ -935,11 +940,13 @@ describe("Test Comments service - Admin", () => {
       );
 
       test("Should post new comment", async () => {
-        const lastCommentId = (Math.max(...db.map(comment=>Number(comment.id))));
+        const lastCommentId = Math.max(
+          ...db.map((comment) => Number(comment.id))
+        );
         const spy = jest
           .spyOn(global.strapi.db, "query")
           // @ts-ignore
-          .mockImplementation( (type: string) => ({
+          .mockImplementation((type: string) => ({
             findOne: async (_: any) =>
               new Promise((resolve) => {
                 switch (type) {
@@ -951,24 +958,26 @@ describe("Test Comments service - Admin", () => {
                     return resolve(relatedEntity);
                 }
               }),
-            create: async (_: any) => 
+            create: async (_: any) =>
               new Promise((resolve) => {
                 return resolve({
                   id: lastCommentId + 1,
                   ...newCommentEntity,
                   ..._.data,
                 });
-              })
+              }),
           }));
 
-          const newComment = "New Comment";
-          const result = await getPluginService<IServiceAdmin>("admin").postComment(db[0].id,newComment,adminUser);
-          expect(result).toHaveProperty(["id"], lastCommentId + 1);
-          expect(result).toHaveProperty(["threadOf"], db[0].id);
-          expect(result).toHaveProperty(["content"], newComment);
+        const newComment = "New Comment";
+        const result = await getPluginService<IServiceAdmin>(
+          "admin"
+        ).postComment(db[0].id, newComment, adminUser);
+        expect(result).toHaveProperty(["id"], lastCommentId + 1);
+        expect(result).toHaveProperty(["threadOf"], db[0].id);
+        expect(result).toHaveProperty(["content"], newComment);
 
-          spy.mockRestore();
+        spy.mockRestore();
       });
-    })
+    });
   });
 });

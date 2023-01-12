@@ -99,7 +99,7 @@ const Reports = ({ config }) => {
       accessReports: pluginPermissions.reports,
       reviewReports: pluginPermissions.reportsReview,
     }),
-    [],
+    []
   );
 
   const {
@@ -121,7 +121,7 @@ const Reports = ({ config }) => {
     () => fetchReportsData(queryParams, toggleNotification),
     {
       initialData: {},
-    },
+    }
   );
 
   useEffect(() => {
@@ -149,8 +149,8 @@ const Reports = ({ config }) => {
     } else {
       onSelectionChange(
         [...selectedReports, selection].filter(
-          (item) => value || selection !== item,
-        ),
+          (item) => value || selection !== item
+        )
       );
     }
   };
@@ -168,10 +168,10 @@ const Reports = ({ config }) => {
     (value) => {
       handleItemSelectionChange(
         storedReports.map((_) => _.id),
-        value,
+        value
       );
     },
-    [storedReports],
+    [storedReports]
   );
 
   const resolveReportMutation = useMutation(resolveReport, {
@@ -190,7 +190,7 @@ const Reports = ({ config }) => {
     if (canReviewReports) {
       lockApp();
       const items = await resolveMultipleReportsMutation.mutateAsync(
-        selectedReports,
+        selectedReports
       );
       if (!isEmpty(items)) {
         const updatedReports = storedReports.map((_) => ({
@@ -230,7 +230,7 @@ const Reports = ({ config }) => {
               <HeaderLayout
                 title={getMessage("page.reports.header")}
                 subtitle={`${total} ${getMessage(
-                  "page.discover.header.count",
+                  "page.discover.header.count"
                 )}`}
                 as="h2"
               />
@@ -245,7 +245,8 @@ const Reports = ({ config }) => {
                       <Button
                         variant="success"
                         onClick={handleClickResolveSelected}
-                        startIcon={check}>
+                        startIcon={check}
+                      >
                         {getMessage(
                           {
                             id: `page.details.panel.discussion.warnings.reports.dialog.actions.resolve.selected`,
@@ -253,7 +254,7 @@ const Reports = ({ config }) => {
                               count: selectedReports.length,
                             },
                           },
-                          "Resolve selected",
+                          "Resolve selected"
                         )}
                       </Button>
                     )}
@@ -269,7 +270,7 @@ const Reports = ({ config }) => {
                           <Th>
                             <BaseCheckbox
                               aria-label={getMessage(
-                                "page.details.panel.discussion.warnings.reports.dialog.selectAll",
+                                "page.details.panel.discussion.warnings.reports.dialog.selectAll"
                               )}
                               value={areAllItemsSelected()}
                               disabled={isEmpty(storedReports)}
@@ -328,15 +329,15 @@ const Reports = ({ config }) => {
         )}
       </Layout>
     </Box>
-  ) :
-    <NoAcccessPage />;
-
+  ) : (
+    <NoAcccessPage />
+  );
 };
 const mapStateToProps = makeAppView();
 
 export const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({}, dispatch);
-}
+};
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(withConnect)(memo(Reports, isEqual));

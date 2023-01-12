@@ -114,7 +114,10 @@ export const buildAuthorModel = (
       }),
       {
         id: authorUser.id,
-        name: authorUser.username,
+        name:
+          authorUser.type === "private_person"
+            ? `${authorUser.name} ${authorUser.otherName}`
+            : authorUser.name,
         email: authorUser.email,
         avatar:
           isString(authorUser.avatar) || isObject(authorUser.avatar)
@@ -148,12 +151,9 @@ export const resolveUserContextError = (user: StrapiUser): PluginError => {
   }
 };
 
-export const getAuthorName = (author: StrapiAdmin) =>{
-  
-  const {lastname, username, firstname} = author;
+export const getAuthorName = (author: StrapiAdmin) => {
+  const { lastname, username, firstname } = author;
 
-  if(lastname)
-    return `${firstname} ${lastname}`
-  else
-    return username || firstname 
+  if (lastname) return `${firstname} ${lastname}`;
+  else return username || firstname;
 };

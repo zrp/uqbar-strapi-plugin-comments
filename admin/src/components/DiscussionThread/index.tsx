@@ -44,10 +44,7 @@ const DiscussionThread = ({
           {getMessage("page.details.panel.discussion", "Discussion")}
         </Typography>
         {rootThread && (
-          <Link
-            to={getUrl(`discover/${rootThread.id}`)}
-            startIcon={arrowUp}
-          >
+          <Link to={getUrl(`discover/${rootThread.id}`)} startIcon={arrowUp}>
             {getMessage("page.details.panel.discussion.nav.back")}
           </Link>
         )}

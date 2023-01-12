@@ -21,7 +21,7 @@ export const fromInput = (value: unknown) => {
     console.warn("Empty state provided from the back-end");
     console.groupEnd();
 
-    state = DEFAULTS
+    state = DEFAULTS;
   }
 
   assertCorrectState(state);

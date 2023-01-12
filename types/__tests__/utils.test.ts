@@ -7,7 +7,9 @@ describe("Types", () => {
         expect(() => assertComment(undefined)).toThrow();
         expect(() => assertComment(null)).toThrow();
         expect(() => assertComment({})).toThrow();
-        expect(() => assertComment({ id: 1, content: "A comment" })).not.toThrow();
+        expect(() =>
+          assertComment({ id: 1, content: "A comment" })
+        ).not.toThrow();
       });
     });
   });

@@ -5,7 +5,7 @@ import ptBr from "./pt-BR.json";
 
 export type TranslationKey = "en" | "fr" | "pt-BR";
 export type Translations = {
-  [key in TranslationKey]: KeyValueSet<string>
+  [key in TranslationKey]: KeyValueSet<string>;
 };
 
 const trads: Translations = {

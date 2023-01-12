@@ -24,7 +24,7 @@ const useReportsActionsHandlers = ({
   updateReports,
 }) => {
   const { canModerate, canReviewReports } = allowedActions;
-    
+
   const { lockApp, unlockApp } = useOverlayBlocker();
 
   const queryClient = useQueryClient();
@@ -47,12 +47,12 @@ const useReportsActionsHandlers = ({
 
   const resolveAllAbuseReportsForCommentMutation = useMutation(
     resolveAllAbuseReportsForComment,
-    mutationConfig,
+    mutationConfig
   );
 
   const resolveAllAbuseReportsForThreadMutation = useMutation(
     resolveAllAbuseReportsForThread,
-    mutationConfig,
+    mutationConfig
   );
 
   const blockItemMutation = useMutation(blockItem, mutationConfig);
@@ -61,7 +61,10 @@ const useReportsActionsHandlers = ({
 
   const blockItemThreadMutation = useMutation(blockItemThread, mutationConfig);
 
-  const unblockItemThreadMutation = useMutation(unblockItemThread, mutationConfig);
+  const unblockItemThreadMutation = useMutation(
+    unblockItemThread,
+    mutationConfig
+  );
 
   const handleClickResolve = async (reportId) => {
     if (canReviewReports) {
@@ -97,11 +100,11 @@ const useReportsActionsHandlers = ({
   const handleUnblockThreadClick = perform(unblockItemThreadMutation.mutate);
 
   const handleResolveAllAbuseReportsForComment = perform(
-    resolveAllAbuseReportsForCommentMutation.mutate,
+    resolveAllAbuseReportsForCommentMutation.mutate
   );
 
   const handleResolveAllAbuseReportsForThread = perform(
-    resolveAllAbuseReportsForThreadMutation.mutate,
+    resolveAllAbuseReportsForThreadMutation.mutate
   );
 
   return {

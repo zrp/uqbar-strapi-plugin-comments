@@ -18,7 +18,7 @@ instance.interceptors.request.use(
   },
   (error: AxiosError) => {
     Promise.reject(error);
-  },
+  }
 );
 
 instance.interceptors.response.use(
@@ -30,7 +30,7 @@ instance.interceptors.response.use(
     }
 
     throw error;
-  },
+  }
 );
 
 export default instance;

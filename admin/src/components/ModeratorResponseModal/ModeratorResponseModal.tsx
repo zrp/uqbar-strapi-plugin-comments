@@ -8,7 +8,12 @@ import React, { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { postComment, updateComment } from "../../pages/utils/api";
 //@ts-ignore
-import { ModalLayout, ModalBody, ModalHeader, ModalFooter } from "@strapi/design-system/ModalLayout";
+import {
+  ModalLayout,
+  ModalBody,
+  ModalHeader,
+  ModalFooter,
+} from "@strapi/design-system/ModalLayout";
 //@ts-ignore
 import { Box } from "@strapi/design-system/Box";
 //@ts-ignore
@@ -22,7 +27,11 @@ import { Divider } from "@strapi/design-system/Divider";
 import { handleAPIError, getMessage } from "../../utils";
 import Wysiwyg from "../Wysiwyg";
 // @ts-ignore
-import { auth, useNotification, useOverlayBlocker } from "@strapi/helper-plugin";
+import {
+  auth,
+  useNotification,
+  useOverlayBlocker,
+} from "@strapi/helper-plugin";
 import { StrapiAdminUser, Id } from "strapi-typed";
 import { pluginId } from "../../pluginId";
 import { ToBeFixed } from "../../../../types";

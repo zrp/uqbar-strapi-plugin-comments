@@ -5,39 +5,43 @@
  */
 
 //@ts-ignore
-import styled, {ThemeInterface} from 'styled-components';
+import styled, { ThemeInterface } from "styled-components";
 
 /* eslint-disable */
 /* stylelint-disable */
 export const EditorStylesContainer = styled.div`
-  cursor: ${({ disabled }: ThemeInterface) => (disabled ? 'not-allowed !important' : 'auto')};
+  cursor: ${({ disabled }: ThemeInterface) =>
+    disabled ? "not-allowed !important" : "auto"};
   height: 100%;
   /* BASICS */
   .CodeMirror-placeholder {
-    color: ${({ theme }:ThemeInterface) => theme.colors.neutral600} !important;
+    color: ${({ theme }: ThemeInterface) => theme.colors.neutral600} !important;
   }
 
   .CodeMirror {
     /* Set height, width, borders, and global font properties here */
     font-size: ${14 / 16}rem;
-    height: ${({ isExpandMode }: ThemeInterface) => (isExpandMode ? '100%' : '290px')};
-    color: ${({ theme }:ThemeInterface) => theme.colors.neutral800};
+    height: ${({ isExpandMode }: ThemeInterface) =>
+      isExpandMode ? "100%" : "290px"};
+    color: ${({ theme }: ThemeInterface) => theme.colors.neutral800};
     direction: ltr;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
-      'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   }
 
   /* PADDING */
 
   .CodeMirror-lines {
-    padding: ${({ theme }:ThemeInterface) => `${theme.spaces[3]} ${theme.spaces[4]}`};
+    padding: ${({ theme }: ThemeInterface) =>
+      `${theme.spaces[3]} ${theme.spaces[4]}`};
     /* Vertical padding around content */
   }
 
   .CodeMirror-scrollbar-filler,
   .CodeMirror-gutter-filler {
     /* The little square between H and V scrollbars */
-    background-color: ${({ theme }:ThemeInterface) => `${theme.colors.neutral0}`};
+    background-color: ${({ theme }: ThemeInterface) =>
+      `${theme.colors.neutral0}`};
   }
 
   /* GUTTER */
@@ -166,7 +170,7 @@ export const EditorStylesContainer = styled.div`
   .CodeMirror {
     position: relative;
     overflow: hidden;
-    background: ${({ theme }:ThemeInterface) => `${theme.colors.neutral0}`};
+    background: ${({ theme }: ThemeInterface) => `${theme.colors.neutral0}`};
   }
 
   .CodeMirror-scroll {
@@ -300,7 +304,8 @@ export const EditorStylesContainer = styled.div`
   .CodeMirror-cursor {
     position: absolute;
     pointer-events: none;
-    border-color: ${({ theme }:ThemeInterface) => `${theme.colors.neutral800}`};
+    border-color: ${({ theme }: ThemeInterface) =>
+      `${theme.colors.neutral800}`};
   }
   .CodeMirror-measure pre {
     position: static;
@@ -323,7 +328,7 @@ export const EditorStylesContainer = styled.div`
   }
 
   .CodeMirror-selected {
-    background: ${({ theme }:ThemeInterface) => theme.colors.neutral200};
+    background: ${({ theme }: ThemeInterface) => theme.colors.neutral200};
     /* z-index: -10; */
   }
   .CodeMirror-crosshair {
@@ -337,7 +342,7 @@ export const EditorStylesContainer = styled.div`
 
   /* See issue #2901 */
   .cm-tab-wrap-hack:after {
-    content: '';
+    content: "";
   }
 
   /* Help users use markselection to safely style text background */
@@ -346,6 +351,6 @@ export const EditorStylesContainer = styled.div`
   }
 
   span {
-    color: ${({ theme }:ThemeInterface) => theme.colors.neutral800} !important;
+    color: ${({ theme }: ThemeInterface) => theme.colors.neutral800} !important;
   }
 `;

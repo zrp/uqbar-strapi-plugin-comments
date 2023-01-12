@@ -5,16 +5,16 @@
  *
  */
 
-import React, { memo, useMemo } from 'react';
-import md from './utils/mdRenderer';
-import sanitizeHtml from './utils/satinizeHtml';
-import Wrapper from './Wrapper';
+import React, { memo, useMemo } from "react";
+import md from "./utils/mdRenderer";
+import sanitizeHtml from "./utils/satinizeHtml";
+import Wrapper from "./Wrapper";
 
 type PreviewWysiwygProps = {
-  data: string
-}
+  data: string;
+};
 const PreviewWysiwyg: React.FC<PreviewWysiwygProps> = ({ data }) => {
-  const html = useMemo(() => sanitizeHtml(md.render(data || '')), [data]);
+  const html = useMemo(() => sanitizeHtml(md.render(data || "")), [data]);
 
   return (
     <Wrapper>
@@ -22,7 +22,5 @@ const PreviewWysiwyg: React.FC<PreviewWysiwygProps> = ({ data }) => {
     </Wrapper>
   );
 };
-
-
 
 export default memo(PreviewWysiwyg);

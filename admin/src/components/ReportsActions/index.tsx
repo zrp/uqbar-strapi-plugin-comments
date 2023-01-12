@@ -4,10 +4,10 @@
 import React from "react";
 import { ActionButton } from "../ActionButton/styles";
 import { Flex } from "@strapi/design-system/Flex";
-import { SimpleMenu, MenuItem } from '@strapi/design-system/SimpleMenu';
+import { SimpleMenu, MenuItem } from "@strapi/design-system/SimpleMenu";
 import { carretDown, check } from "../icons";
 
-import { getMessage } from '../../utils';
+import { getMessage } from "../../utils";
 import useReportsActionsHandlers from "../../hooks/useReportsActionsHandlers";
 import BlockMenu from "./components/BlockMenu";
 
@@ -27,20 +27,19 @@ const ReportsActions = ({
       blocked: blockedComment,
       blockedThread,
       gotThread,
-      id: commentId
-    } } = item;
+      id: commentId,
+    },
+  } = item;
 
-  const handlers = useReportsActionsHandlers(
-    {
-      allowedActions,
-      commentId,
-      mutation,
-      onSelectionChange,
-      reports,
-      selectedReports,
-      updateReports
-    }
-  );
+  const handlers = useReportsActionsHandlers({
+    allowedActions,
+    commentId,
+    mutation,
+    onSelectionChange,
+    reports,
+    selectedReports,
+    updateReports,
+  });
 
   const { handleClickResolve } = handlers;
 
@@ -51,26 +50,18 @@ const ReportsActions = ({
           isSingle
           onClick={() => handleClickResolve(reportId)}
           startIcon={check}
-          variant="success">
+          variant="success"
+        >
           {getMessage(
             "page.details.panel.discussion.warnings.reports.dialog.actions.resolve",
-            "resolve",
+            "resolve"
           )}
         </ActionButton>
       ) : (
-        <BlockMenu
-          handlers={handlers}
-          item={item}
-        />
+        <BlockMenu handlers={handlers} item={item} />
       )}
-      {!resolved &&
-        <BlockMenu
-          handlers={handlers}
-          item={item}
-          type="icon"
-        />
-      }
-    </Flex >
+      {!resolved && <BlockMenu handlers={handlers} item={item} type="icon" />}
+    </Flex>
   );
 };
 
