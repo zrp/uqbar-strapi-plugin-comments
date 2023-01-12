@@ -413,8 +413,8 @@ describe("Test Comments service - Common", () => {
           },
           role: {
             id: 1,
-            name: "my role"
-          }
+            name: "my role",
+          },
         },
       },
     ];

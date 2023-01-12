@@ -20,7 +20,7 @@ import {
   unlock,
   trash,
   pencil,
-  plus
+  plus,
 } from "./strapiIcons";
 
 export {
@@ -45,5 +45,5 @@ export {
   unlock,
   trash,
   pencil,
-  plus
+  plus,
 };

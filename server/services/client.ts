@@ -242,7 +242,7 @@ export = ({ strapi }: StrapiContext): IServiceClient => ({
         throw new PluginError(
           403,
           `You're not allowed to take an action on that entity. This in a admin comment.`
-          );
+        );
       }
 
       if (reportAgainstEntity) {
@@ -276,7 +276,7 @@ export = ({ strapi }: StrapiContext): IServiceClient => ({
       );
     } catch (e) {
       throw e;
-      }
+    }
   },
 
   async markAsRemoved(
@@ -368,7 +368,7 @@ export = ({ strapi }: StrapiContext): IServiceClient => ({
         where: {
           roles: { code: "strapi-super-admin" },
         },
-      }); 
+      });
 
     if (emails.length > 0) {
       try {
@@ -408,14 +408,17 @@ export = ({ strapi }: StrapiContext): IServiceClient => ({
     this: IServiceClient,
     entity: Comment
   ): Promise<void> {
-
     if (entity.threadOf) {
-      const thread = isObject(entity.threadOf) ? entity.threadOf : await this.getCommonService().findOne({ id: entity.threadOf });
+      const thread = isObject(entity.threadOf)
+        ? entity.threadOf
+        : await this.getCommonService().findOne({ id: entity.threadOf });
       let emailRecipient = thread?.author?.email;
       if (thread.authorUser && !emailRecipient) {
-        const strapiUser = isObject(thread.authorUser) ? thread.authorUser : await strapi.db.query<StrapiUser>("api::user").findOne({ 
-          where: { id: thread.authorUser }
-        });
+        const strapiUser = isObject(thread.authorUser)
+          ? thread.authorUser
+          : await strapi.db.query<StrapiUser>("api::user").findOne({
+              where: { id: thread.authorUser },
+            });
         emailRecipient = strapiUser?.email;
       }
 
@@ -428,8 +431,14 @@ export = ({ strapi }: StrapiContext): IServiceClient => ({
             },
           });
 
-        const emailSender = await this.getCommonService().getConfig('client.contactEmail', superAdmin.email);
-        const clientAppUrl = await this.getCommonService().getConfig('client.url', 'our site');
+        const emailSender = await this.getCommonService().getConfig(
+          "client.contactEmail",
+          superAdmin.email
+        );
+        const clientAppUrl = await this.getCommonService().getConfig(
+          "client.url",
+          "our site"
+        );
 
         try {
           await strapi
@@ -440,7 +449,9 @@ export = ({ strapi }: StrapiContext): IServiceClient => ({
               from: emailSender,
               subject: "You've got a new response to your comment",
               text: `Hello ${thread?.author?.name || emailRecipient}!
-                You've got a new response to your comment by ${entity?.author?.name || entity?.author?.email}.
+                You've got a new response to your comment by ${
+                  entity?.author?.name || entity?.author?.email
+                }.
                 
                 ------
 
@@ -457,5 +468,5 @@ export = ({ strapi }: StrapiContext): IServiceClient => ({
         }
       }
     }
-  }, 
+  },
 });

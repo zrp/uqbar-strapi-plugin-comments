@@ -8,7 +8,7 @@
 // @ts-nocheck
 
 import React from "react";
-import { comments } from '../icons'
+import { comments } from "../icons";
 
 const PluginIcon = () => comments;
 

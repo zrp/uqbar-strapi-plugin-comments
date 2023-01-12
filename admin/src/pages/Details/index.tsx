@@ -119,9 +119,9 @@ const Details = ({ config }) => {
             <>
               <HeaderLayout
                 navigationAction={
-                    <Link startIcon={arrowLeft} to={getUrl(`discover`)}>
-                      {getMessage("HeaderLayout.link.go-back", "Back", false)}
-                    </Link>
+                  <Link startIcon={arrowLeft} to={getUrl(`discover`)}>
+                    {getMessage("HeaderLayout.link.go-back", "Back", false)}
+                  </Link>
                 }
                 title={getMessage("page.details.header")}
                 subtitle={getMessage("page.details.header.description")}

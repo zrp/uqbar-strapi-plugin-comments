@@ -9,7 +9,7 @@ import { Flex } from "@strapi/design-system/Flex";
 import { IconButton } from "@strapi/design-system/IconButton";
 import { Link } from "@strapi/design-system/Link";
 import { Stack } from "@strapi/design-system/Stack";
-import { Tr, Td } from "@strapi/design-system/Table";
+import { Td } from "@strapi/design-system/Table";
 import { Typography } from "@strapi/design-system/Typography";
 import {
   getMessage,
@@ -18,13 +18,14 @@ import {
   resolveCommentStatusColor,
 } from "../../../../utils";
 import { eye } from "../../../../components/icons";
-import { TableLink } from "./styles";
+import { TableLink, TrCustom } from "./styles";
 import renderEntryTitle from "../../../../utils/renderEntryTitle";
 import DiscussionThreadItemApprovalFlowActions from "../../../../components/DiscussionThreadItemApprovalFlowActions";
 import StatusBadge from "../../../../components/StatusBadge";
 import { IconButtonGroupStyled } from "../../../../components/IconButton/styles";
 import DiscussionThreadItemReviewAction from "../../../../components/DiscussionThreadItemReviewAction";
 import UserAvatar from "../../../../components/Avatar";
+import TableRows from "@strapi/admin";
 
 const DiscoverTableRow = ({
   config,
@@ -87,20 +88,27 @@ const DiscoverTableRow = ({
     threadOf,
     related,
     createdAt,
-    updatedAt } = item;
+    updatedAt,
+  } = item;
 
   return (
-    <Tr key={id}>
+    <TrCustom key={id} onClick={handleClick}>
       <Td>
         <Typography textColor="neutral800" fontWeight="bold">
           #{id}
         </Typography>
       </Td>
       <Td>
-        <Stack size={2} horizontal>
-          {author && (<UserAvatar avatar={author.avatar} name={author.name} isAdminComment={isAdminComment}/>)}
+        <Stack spacing={2} horizontal>
+          {author && (
+            <UserAvatar
+              avatar={author?.professional?.photo?.formats?.thumbnail?.url}
+              name={author.name}
+              isAdminComment={isAdminComment}
+            />
+          )}
           <Typography textColor="neutral800" variant="pi">
-            {author?.name || getMessage('compontents.author.unknown')}
+            {author?.name || getMessage("compontents.author.unknown")}
           </Typography>
         </Stack>
       </Td>
@@ -111,7 +119,7 @@ const DiscoverTableRow = ({
       </Td>
       <Td>
         {threadOf?.id ? (
-          <Link to={renderDetailsUrl(threadOf)}>
+          <TableLink to={renderDetailsUrl(threadOf)}>
             {getMessage(
               {
                 id: "page.discover.table.cell.thread",
@@ -119,7 +127,7 @@ const DiscoverTableRow = ({
               },
               "#" + threadOf.id
             )}
-          </Link>
+          </TableLink>
         ) : (
           "-"
         )}
@@ -144,7 +152,7 @@ const DiscoverTableRow = ({
       <Td>
         <Typography textColor="neutral800">{renderStatus(item)}</Typography>
       </Td>
-      <Td>
+      {/* <Td>
         <Flex direction="column" alignItems="flex-end">
           <IconButtonGroupStyled
             isSingle={!(reviewFlowEnabled || (canModerate && needsApproval))}
@@ -171,8 +179,8 @@ const DiscoverTableRow = ({
             />
           </IconButtonGroupStyled>
         </Flex>
-      </Td>
-    </Tr>
+      </Td> */}
+    </TrCustom>
   );
 };
 

@@ -7,14 +7,14 @@
 // TODO
 // @ts-nocheck
 
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
   ModalLayout,
   ModalBody,
   ModalHeader,
   ModalFooter,
-} from '@strapi/design-system/ModalLayout';
+} from "@strapi/design-system/ModalLayout";
 import { Typography } from "@strapi/design-system/Typography";
 import { getMessage } from "../../utils";
 import DiscussionThreadItem from "../DiscussionThreadItem";
@@ -33,7 +33,7 @@ const CommentReviewModal = ({
         <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">
           {getMessage(
             "page.details.panel.discussion.warnings.comments.header",
-            "Open reports",
+            "Open reports"
           )}
         </Typography>
       </ModalHeader>
@@ -54,6 +54,5 @@ const CommentReviewModal = ({
       />
     </ModalLayout>
   );
-
 
 export default CommentReviewModal;

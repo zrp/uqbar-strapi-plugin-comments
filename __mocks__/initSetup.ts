@@ -1,8 +1,11 @@
 import { get, set, pick, isEmpty } from "lodash";
 
-
 // @ts-ignore
-const mockStrapi = (config: any = {}, toStore: boolean = false, database: any = {}) => {
+const mockStrapi = (
+  config: any = {},
+  toStore: boolean = false,
+  database: any = {}
+) => {
   const dbConfig = toStore
     ? {
         plugin: {
@@ -110,17 +113,17 @@ const mockStrapi = (config: any = {}, toStore: boolean = false, database: any = 
         },
         services: {
           email: {
-            send: async () => { }
-          }
-        }
+            send: async () => {},
+          },
+        },
       },
       graphql: {},
       "users-permissions": {
         contentTypes: {
           user: {
-            uid: 'plugin::users-permissions.user',
-          }
-        }
+            uid: "plugin::users-permissions.user",
+          },
+        },
       },
     },
     config: {
@@ -141,11 +144,11 @@ const mockStrapi = (config: any = {}, toStore: boolean = false, database: any = 
       },
     },
     contentTypes: {
-      'plugin::users-permissions.user': {
-        uid: 'plugin::users-permissions.user',
-        attributes: {}
-      }
-    }
+      "plugin::users-permissions.user": {
+        uid: "plugin::users-permissions.user",
+        attributes: {},
+      },
+    },
   };
 
   if (!isEmpty(database)) {

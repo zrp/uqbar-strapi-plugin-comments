@@ -5,11 +5,11 @@ import styled from "styled-components";
 import { Box } from "@strapi/design-system/Box";
 
 export const AdminAvatarWrapper = styled(Box)`
-    position: relative;
+  position: relative;
 `;
 
 export const AdminShield = styled(Box)`
-    position: absolute;
-    right: -30%;
-    top: -30%;
+  position: absolute;
+  right: -30%;
+  top: -30%;
 `;

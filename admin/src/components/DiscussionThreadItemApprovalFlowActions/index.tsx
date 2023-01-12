@@ -19,7 +19,7 @@ import { pluginId } from "../../pluginId";
 const DiscussionThreadItemApprovalFlowActions = ({
   id,
   allowedActions: { canModerate },
-  queryToInvalidate
+  queryToInvalidate,
 }) => {
   const toggleNotification = useNotification();
   const queryClient = useQueryClient();

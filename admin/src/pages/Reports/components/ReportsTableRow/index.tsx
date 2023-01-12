@@ -1,13 +1,11 @@
 // TODO
 // @ts-nocheck
 
-
 import { BaseCheckbox } from "@strapi/design-system/BaseCheckbox";
 import { Button } from "@strapi/design-system/Button";
 
 import { Tr, Td } from "@strapi/design-system/Table";
 import { Typography } from "@strapi/design-system/Typography";
-;
 import { eye } from "../../../../components/icons";
 
 import React, { useState, useCallback } from "react";
@@ -21,7 +19,7 @@ import {
   getMessage,
   resolveReportStatus,
   resolveReportStatusColor,
-} from '../../../../utils';
+} from "../../../../utils";
 
 import ReportsActions from "../../../../components/ReportsActions";
 
@@ -40,9 +38,7 @@ const ReportsTableRow = ({
   selectedReports,
   updateReports,
 }) => {
-  const {
-    reports: reportedReports,
-  } = item;
+  const { reports: reportedReports } = item;
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -66,7 +62,8 @@ const ReportsTableRow = ({
       <StatusBadge
         backgroundColor={`${color}100`}
         textColor={`${color}700`}
-        color={color}>
+        color={color}
+      >
         {getMessage(
           {
             id: `page.common.item.status.${status}`,
@@ -74,7 +71,7 @@ const ReportsTableRow = ({
               count: openReports.length,
             },
           },
-          status,
+          status
         )}
       </StatusBadge>
     );
@@ -85,7 +82,7 @@ const ReportsTableRow = ({
       <Td>
         <BaseCheckbox
           aria-label={getMessage(
-            "page.details.panel.discussion.warnings.reports.dialog.select",
+            "page.details.panel.discussion.warnings.reports.dialog.select"
           )}
           value={isChecked(item.id)}
           onValueChange={(value) => handleItemSelectionChange(item.id, value)}
@@ -120,16 +117,13 @@ const ReportsTableRow = ({
         </Typography>
       </Td>
       <Td>
-        <Button
-          variant="tertiary"
-          startIcon={eye}
-          onClick={handleOpenModal}>
+        <Button variant="tertiary" startIcon={eye} onClick={handleOpenModal}>
           {getMessage(
             {
               id: "page.discover.table.cell.thread",
               props: { id: item.related.id },
             },
-            `#${item.related.id}`,
+            `#${item.related.id}`
           )}
         </Button>
         <CommentReviewModal

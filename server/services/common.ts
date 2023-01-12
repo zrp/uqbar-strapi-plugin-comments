@@ -102,7 +102,14 @@ export = ({ strapi }: StrapiContext): IServiceCommon => ({
     const defaultSelect: Array<CommentModelKeys> = ["id", "related"];
 
     const populateClause: PopulateClause<CommentModelKeys> = {
-      authorUser: true,
+      authorUser: {
+        populate: {
+          professional: {
+            select: ["id", "slug"],
+            populate: ["photo"],
+          },
+        },
+      },
       ...(isObject(populate) ? populate : {}),
     };
 
@@ -251,9 +258,10 @@ export = ({ strapi }: StrapiContext): IServiceCommon => ({
 
       let authorUserPopulate = {};
       if (isObject(populateClause?.authorUser)) {
-        authorUserPopulate = 'populate' in populateClause.authorUser ? 
-          populateClause.authorUser.populate as StringMap<unknown> : 
-          populateClause.authorUser;
+        authorUserPopulate =
+          "populate" in populateClause.authorUser
+            ? (populateClause.authorUser.populate as StringMap<unknown>)
+            : populateClause.authorUser;
       }
 
       return this.sanitizeCommentEntity(

@@ -16,22 +16,22 @@ const filtersSchema = [
   },
   {
     name: "authorName",
-    metadatas: {label: "Author"},
-    fieldSchema: {type: "string"},
+    metadatas: { label: "Author" },
+    fieldSchema: { type: "string" },
   },
   {
     name: "threadOf",
-    metadatas: {label: "threadOf"},
+    metadatas: { label: "threadOf" },
     fieldSchema: {
       type: "relation",
       mainField: {
         name: "id",
         schema: {
-          type: "number"
-        }
-      }
-    }
-  }
+          type: "number",
+        },
+      },
+    },
+  },
 ];
 
 export default filtersSchema;

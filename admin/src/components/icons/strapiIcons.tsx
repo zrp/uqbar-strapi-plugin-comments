@@ -1,6 +1,6 @@
 // TODO
 // @ts-nocheck
-import React from 'react';
+import React from "react";
 import {
   Apps,
   ArrowLeft,
@@ -20,12 +20,12 @@ import {
   Trash,
   Pencil,
   Plus,
-  Shield
+  Shield,
 } from "@strapi/icons";
-import ReviewIcon from './review';
-import LockIcon from './lock';
-import UnlockIcon from './unlock';
-import CommentsIcon from './comments';
+import ReviewIcon from "./review";
+import LockIcon from "./lock";
+import UnlockIcon from "./unlock";
+import CommentsIcon from "./comments";
 
 export const apps = <Apps />;
 export const arrowLeft = <ArrowLeft />;
@@ -50,4 +50,3 @@ export const trash = <Trash />;
 export const pencil = <Pencil />;
 export const plus = <Plus />;
 export const shield = <Shield />;
-

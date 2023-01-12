@@ -21,7 +21,14 @@ export const flatInput = <T, TKeys = keyof T>(
   let threadOfPopulate = {
     threadOf: {
       populate: {
-        authorUser: true,
+        authorUser: {
+          populate: {
+            professional: {
+              select: ["id", "slug"],
+              populate: ["photo"],
+            },
+          },
+        },
         ...populate,
       },
     },
