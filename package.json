@@ -20,7 +20,8 @@
     "test:unit": "jest --verbose --coverage",
     "test:unit:ci": "CI=true jest --ci --runInBand --verbose --coverage",
     "lint": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "release": "npx semantic-release"
   },
   "repository": {
     "type": "git",
