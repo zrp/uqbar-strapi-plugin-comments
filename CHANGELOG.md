@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/zrp/uqbar-strapi-plugin-comments/compare/v1.0.1...v1.0.2) (2023-01-13)
+
+
+### Bug Fixes
+
+* **UQ-1853:** fixed pluginId ([600a851](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/600a851804b43e2cbcc177384612235cf011e20d))
+
 ## [1.0.1](https://github.com/zrp/uqbar-strapi-plugin-comments/compare/v1.0.0...v1.0.1) (2023-01-13)
 
 
