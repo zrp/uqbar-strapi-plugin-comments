@@ -81,9 +81,14 @@
   },
   "author": {
     "name": "Cleberton Junior",
-    "email": "cleberton.junior@zrp.com.br",
-    "url": "https://zrp.com.br/"
+    "email": "cleberton.junior@zrp.com.br"
   },
+  "maintainers": [
+    {
+      "name": "Alex Gotardi",
+      "email": "alex.gotardi@zrp.com.br"
+    }
+  ],
   "engines": {
     "node": ">=14.19.1 <=18.x.x",
     "npm": ">=7.x.x"
