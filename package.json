@@ -1,5 +1,5 @@
 {
-  "name": "@zrpaplicacoes/strapi-plugin-comments",
+  "name": "@uqbardev/strapi-plugin-comments",
   "version": "2.2.4",
   "description": "Strapi - Comments plugin",
   "strapi": {
@@ -107,9 +107,12 @@
           "changelogFile": "CHANGELOG.md"
         }
       ],
-      ["@semantic-release/npm", {
-        "pkgRoot": "build"
-      }],
+      [
+        "@semantic-release/npm",
+        {
+          "pkgRoot": "build"
+        }
+      ],
       [
         "@semantic-release/git",
         {
