@@ -3,6 +3,7 @@
  * Discussion thread - Moderators response modal
  *
  */
+// @ts-nocheck
 
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";

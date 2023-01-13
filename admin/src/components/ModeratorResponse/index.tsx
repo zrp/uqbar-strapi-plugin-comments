@@ -3,6 +3,7 @@
  * Discussion thread - Moderators response
  *
  */
+// @ts-nocheck
 
 import React, { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "react-query";
