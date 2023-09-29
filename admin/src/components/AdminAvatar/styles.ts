@@ -12,7 +12,7 @@ export const AdminAvatarWrapper = styled(Box)`
 
 export const AdminShield = styled(Box)`
     display: flex;
-    align-items: middle;
+    align-items: center;
 
     position: absolute;
     right: -35%;
