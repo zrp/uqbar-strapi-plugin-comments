@@ -13,7 +13,7 @@ export const fetchConfig = async (toggleNotification) => {
     handleAPIError(
       err,
       toggleNotification,
-      "page.settings.notification.fetch.error",
+      "page.settings.notification.fetch.error"
     );
   }
 };
@@ -22,7 +22,7 @@ export const updateConfig = async (body, toggleNotification) => {
   try {
     const { data } = await axiosInstance.put(
       getApiURL(`settings/config`),
-      body,
+      body
     );
 
     return data;
@@ -44,7 +44,7 @@ export const restoreConfig = async (toggleNotification) => {
 export const fetchAllContentTypes = async (toggleNotification) => {
   try {
     const { data } = await axiosInstance.get(
-      `/content-type-builder/content-types`,
+      `/content-type-builder/content-types`
     );
     return data?.data;
   } catch (err) {

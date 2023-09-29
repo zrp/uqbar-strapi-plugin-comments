@@ -4,21 +4,23 @@
  *
  */
 
-import React from 'react';
-import { IntlShape, useIntl } from 'react-intl';
+import React from "react";
+import { IntlShape, useIntl } from "react-intl";
 //@ts-ignore
-import { Typography } from '@strapi/design-system/Typography';
+import { Typography } from "@strapi/design-system/Typography";
 
-type HintProps = 
-  {description: {
-    id: string,
-    defaultMessage:string,
-    values: {},
-  } | undefined,
-  error: string | undefined,
-  id: string,
-  name: string,
-}
+type HintProps = {
+  description:
+    | {
+        id: string;
+        defaultMessage: string;
+        values: {};
+      }
+    | undefined;
+  error: string | undefined;
+  id: string;
+  name: string;
+};
 
 export const Hint: React.FC<HintProps> = ({ id, error, name, description }) => {
   const { formatMessage }: IntlShape = useIntl();
@@ -27,7 +29,7 @@ export const Hint: React.FC<HintProps> = ({ id, error, name, description }) => {
         { id: description.id, defaultMessage: description.defaultMessage },
         { ...description.values }
       )
-    : '';
+    : "";
 
   if (!hint || error) {
     return null;
@@ -36,8 +38,8 @@ export const Hint: React.FC<HintProps> = ({ id, error, name, description }) => {
   return (
     <Typography
       as="p"
-      variant="pi" 
-      id={`${id || name}-hint`} 
+      variant="pi"
+      id={`${id || name}-hint`}
       textColor="neutral600"
     >
       {hint}

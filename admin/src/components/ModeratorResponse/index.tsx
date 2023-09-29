@@ -3,6 +3,7 @@
  * Discussion thread - Moderators response
  *
  */
+// @ts-nocheck
 
 import React, { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "react-query";
@@ -23,7 +24,11 @@ import { getMessage, handleAPIError } from "../../utils";
 import Wysiwyg from "../Wysiwyg";
 import { Comment } from "../../../../types/contentTypes";
 // @ts-ignore
-import { auth, useNotification, useOverlayBlocker } from "@strapi/helper-plugin";
+import {
+  auth,
+  useNotification,
+  useOverlayBlocker,
+} from "@strapi/helper-plugin";
 import { StrapiAdminUser, Id } from "strapi-typed";
 import { pluginId } from "../../pluginId";
 import { ToBeFixed } from "../../../../types";

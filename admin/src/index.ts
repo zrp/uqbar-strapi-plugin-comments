@@ -1,6 +1,6 @@
 // @ts-ignore
 import { prefixPluginTranslations } from "@strapi/helper-plugin";
-import { get } from 'lodash';
+import { get } from "lodash";
 import { StrapiAdminInstance } from "strapi-typed";
 import * as pluginPkg from "../../package.json";
 import { pluginId } from "./pluginId";
@@ -25,7 +25,7 @@ export default {
       },
       Component: async () => {
         const component = await import(
-          /* webpackChunkName: "[request]" */ './pages/App'
+          /* webpackChunkName: "[request]" */ "./pages/App"
         );
 
         return component;

@@ -9,7 +9,7 @@ const config: JestConfigWithTsJest = {
   preset: "ts-jest",
   coverageDirectory: "./coverage/",
   collectCoverage: true,
-  reporters: [ "default", "jest-junit" ],
+  reporters: ["default", "jest-junit"],
   globals: {
     "ts-jest": {
       diagnostics: {

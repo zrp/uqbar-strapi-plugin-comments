@@ -27,14 +27,15 @@ const DiscussionThreadItemReviewAction = ({
   allowedActions: { canModerate, canAccessReports, canReviewReports },
   isAnyActionLoading,
   item,
-  queryToInvalidate
+  queryToInvalidate,
 }) => {
   const { blockedThread, reports } = item;
 
   const [reportsReviewVisible, setReportsReviewVisible] = useState(false);
   const [storedItems, setStoredItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [blockButtonsDisabled, setBlockButtonsDisabled] = useState(blockedThread);
+  const [blockButtonsDisabled, setBlockButtonsDisabled] =
+    useState(blockedThread);
 
   const handleBlockButtonsStateChange = (disabled) =>
     setBlockButtonsDisabled(disabled);
@@ -45,20 +46,22 @@ const DiscussionThreadItemReviewAction = ({
 
   useEffect(() => {
     setStoredItems(
-      orderBy(reports, ["resolved", "createdAt"], ["DESC", "DESC"]),
+      orderBy(reports, ["resolved", "createdAt"], ["DESC", "DESC"])
     );
   }, [reportsReviewVisible, reports]);
 
-  const onSuccess = (message = "") => () => {
-    queryClient.invalidateQueries(queryToInvalidate);
-    if (message) {
-      toggleNotification({
-        type: "success",
-        message: `${pluginId}.${message}`,
-      });
-    }
-    unlockApp();
-  };
+  const onSuccess =
+    (message = "") =>
+    () => {
+      queryClient.invalidateQueries(queryToInvalidate);
+      if (message) {
+        toggleNotification({
+          type: "success",
+          message: `${pluginId}.${message}`,
+        });
+      }
+      unlockApp();
+    };
 
   const onError = (err) => () => {
     handleAPIError(err, toggleNotification);
@@ -67,7 +70,7 @@ const DiscussionThreadItemReviewAction = ({
   const mutationConfig = (message) => {
     return {
       onSuccess: onSuccess(message),
-      onError
+      onError,
     };
   };
 
@@ -79,10 +82,18 @@ const DiscussionThreadItemReviewAction = ({
 
   const isNotResolved = (entry) => !entry.resolved;
 
-  const resolveReportMutation = useMutation(resolveReport, mutationConfig("page.details.panel.discussion.warnings.reports.dialog.confirmation.success"));
+  const resolveReportMutation = useMutation(
+    resolveReport,
+    mutationConfig(
+      "page.details.panel.discussion.warnings.reports.dialog.confirmation.success"
+    )
+  );
 
   const resolveCommentMultipleReportsMutation = useMutation(
-    resolveCommentMultipleReports, mutationConfig("page.details.panel.discussion.warnings.reports.selected.dialog.confirmation.success")
+    resolveCommentMultipleReports,
+    mutationConfig(
+      "page.details.panel.discussion.warnings.reports.selected.dialog.confirmation.success"
+    )
   );
 
   const resolveAllAbuseReportsForCommentMutation = useMutation(
@@ -95,9 +106,15 @@ const DiscussionThreadItemReviewAction = ({
     mutationConfig()
   );
 
-  const blockItemMutation = useMutation(blockItem, mutationConfig("page.details.actions.comment.block.confirmation.success"));
+  const blockItemMutation = useMutation(
+    blockItem,
+    mutationConfig("page.details.actions.comment.block.confirmation.success")
+  );
 
-  const blockItemThreadMutation = useMutation(blockItemThread, mutationConfig("page.details.actions.thread.block.confirmation.success"));
+  const blockItemThreadMutation = useMutation(
+    blockItemThread,
+    mutationConfig("page.details.actions.thread.block.confirmation.success")
+  );
 
   const handleReportsReviewClick = () => {
     if (canAccessReports) {
@@ -130,7 +147,7 @@ const DiscussionThreadItemReviewAction = ({
         setStoredItems(updatedItems);
         setSelectedItems([], false);
         handleBlockButtonsStateChange(
-          updatedItems.filter(isNotResolved).length === 0,
+          updatedItems.filter(isNotResolved).length === 0
         );
       }
     }
@@ -190,7 +207,7 @@ const DiscussionThreadItemReviewAction = ({
             <Button onClick={handleReportsReviewClose} variant="tertiary">
               {getMessage(
                 "compontents.confirmation.dialog.button.cancel",
-                "Cancel",
+                "Cancel"
               )}
             </Button>
           }
@@ -201,10 +218,11 @@ const DiscussionThreadItemReviewAction = ({
                   onClick={handleOnClikcBlockComment}
                   variant="danger-light"
                   startIcon={lock}
-                  disabled={blockButtonsDisabled}>
+                  disabled={blockButtonsDisabled}
+                >
                   {getMessage(
                     `page.details.actions.comment.block`,
-                    "Block comment",
+                    "Block comment"
                   )}
                 </Button>
                 {item.gotThread && (
@@ -212,10 +230,11 @@ const DiscussionThreadItemReviewAction = ({
                     onClick={handleOnClikcBlockThread}
                     variant="danger"
                     startIcon={lock}
-                    disabled={blockButtonsDisabled}>
+                    disabled={blockButtonsDisabled}
+                  >
                     {getMessage(
                       `page.details.actions.thread.block`,
-                      "Block thread",
+                      "Block thread"
                     )}
                   </Button>
                 )}
@@ -223,7 +242,8 @@ const DiscussionThreadItemReviewAction = ({
                   <Button
                     onClick={handleClickResolveSelected}
                     variant="success"
-                    startIcon={check}>
+                    startIcon={check}
+                  >
                     {getMessage(
                       {
                         id: `page.details.panel.discussion.warnings.reports.dialog.actions.resolve.selected`,
@@ -231,14 +251,15 @@ const DiscussionThreadItemReviewAction = ({
                           count: selectedItems.length,
                         },
                       },
-                      "Resolve selected",
+                      "Resolve selected"
                     )}
                   </Button>
                 )}
               </>
             )
           }
-          item={item}>
+          item={item}
+        >
           <ReportsReviewTable
             commentId={item.id}
             items={storedItems}
@@ -264,7 +285,7 @@ DiscussionThreadItemReviewAction.propTypes = {
     canAccessReports: PropTypes.bool,
     canReviewReports: PropTypes.bool,
   }),
-  queryToInvalidate: PropTypes.string
+  queryToInvalidate: PropTypes.string,
 };
 
 export default DiscussionThreadItemReviewAction;

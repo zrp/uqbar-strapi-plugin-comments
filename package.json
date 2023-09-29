@@ -1,6 +1,6 @@
 {
-  "name": "strapi-plugin-comments",
-  "version": "2.2.15",
+  "name": "@uqbardev/strapi-plugin-comments",
+  "version": "2.2.4",
   "description": "Strapi - Comments plugin",
   "strapi": {
     "name": "comments",
@@ -20,11 +20,12 @@
     "test:unit": "jest --verbose --coverage",
     "test:unit:ci": "CI=true jest --ci --runInBand --verbose --coverage",
     "lint": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "release": "npx semantic-release"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/VirtusLab-Open-Source/strapi-plugin-comments"
+    "url": "https://github.com/zrp/uqbar-strapi-plugin-comments.git"
   },
   "dependencies": {
     "@strapi/plugin-graphql": "^4.13.6",
@@ -42,6 +43,11 @@
     "@strapi/helper-plugin": "^4.13.6",
     "@types/bad-words": "^3.0.1",
     "@types/jest": "^29.4.0",
+    "@semantic-release/changelog": "^6.0.2",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^9.0.1",
+    "@strapi/helper-plugin": "^4.5.5",
+    "@types/bad-words": "^3.0.1",
     "codecov": "^3.7.2",
     "copyfiles": "^2.4.1",
     "highlight.js": "^10.4.1",
@@ -68,6 +74,7 @@
     "rimraf": "^4.3.0",
     "react-intl": "^6.4.1",
     "sanitize-html": "2.11.0",
+    "semantic-release": "19.0.5",
     "strapi-typed": "^1.0.15",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
@@ -94,20 +101,13 @@
     }
   },
   "author": {
-    "name": "VirtusLab",
-    "email": "strapi@virtuslab.com",
-    "url": "https://virtuslab.com"
+    "name": "Cleberton Junior",
+    "email": "cleberton.junior@zrp.com.br"
   },
   "maintainers": [
     {
-      "name": "VirtusLab // Mateusz Ziarko",
-      "email": "mziarko@virtuslab.com",
-      "url": "https://virtuslab.com"
-    },
-    {
-      "name": "VirtusLab // Maksymilian Pamuła",
-      "email": "mpamula@virtuslab.com",
-      "url": "https://virtuslab.com"
+      "name": "Alex Gotardi",
+      "email": "alex.gotardi@zrp.com.br"
     }
   ],
   "engines": {
@@ -119,5 +119,36 @@
     "plugin",
     "comments"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
+        }
+      ],
+      [
+        "@semantic-release/npm",
+        {
+          "pkgRoot": "build"
+        }
+      ],
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json",
+            "CHANGELOG.md"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ]
+    ]
+  }
 }

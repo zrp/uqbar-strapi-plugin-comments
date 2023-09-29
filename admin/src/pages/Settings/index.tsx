@@ -132,10 +132,13 @@ const Settings = () => {
       "*": entryLabel["*"],
     },
     reportReasons: configData?.reportReasons,
-    client: clientEmail || clientUrl ? {
-      contactEmail: clientEmail,
-      url: clientUrl,
-    } : undefined,
+    client:
+      clientEmail || clientUrl
+        ? {
+            contactEmail: clientEmail,
+            url: clientUrl,
+          }
+        : undefined,
     gql: gqlAuthEnabled ? { auth: true } : undefined,
   });
 
@@ -559,7 +562,9 @@ const Settings = () => {
                           label={getMessage(
                             "page.settings.form.client.url.label"
                           )}
-                          hint={getMessage("page.settings.form.client.url.hint")}
+                          hint={getMessage(
+                            "page.settings.form.client.url.hint"
+                          )}
                           value={values.clientUrl}
                           onChange={({ target: { value } }: ToBeFixed) =>
                             setFieldValue("clientUrl", value, false)
@@ -574,7 +579,9 @@ const Settings = () => {
                           label={getMessage(
                             "page.settings.form.client.email.label"
                           )}
-                          hint={getMessage("page.settings.form.client.email.hint")}
+                          hint={getMessage(
+                            "page.settings.form.client.email.hint"
+                          )}
                           value={values.clientEmail}
                           onChange={({ target: { value } }: ToBeFixed) =>
                             setFieldValue("clientEmail", value, false)

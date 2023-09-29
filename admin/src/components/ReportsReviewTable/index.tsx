@@ -37,13 +37,13 @@ const ReportsReviewTable = ({
   selectedItems = [],
   mutation,
   updateItems,
-  allowedActions: {canAccessReports, canReviewReports},
+  allowedActions: { canAccessReports, canReviewReports },
   onBlockButtonsStateChange,
   onSelectionChange,
 }) => {
-  const {formatDate} = useIntl();
+  const { formatDate } = useIntl();
 
-  const {lockApp} = useOverlayBlocker();
+  const { lockApp } = useOverlayBlocker();
 
   const renderStatus = (resolved) => {
     const status = resolved ? REPORT_STATUS.RESOLVED : REPORT_STATUS.OPEN;
@@ -59,10 +59,11 @@ const ReportsReviewTable = ({
       <StatusBadge
         backgroundColor={`${color}100`}
         textColor={`${color}600`}
-        color={color}>
+        color={color}
+      >
         {getMessage(
           `page.details.panel.discussion.warnings.reports.dialog.status.${status}`,
-          status,
+          status
         )}
       </StatusBadge>
     );
@@ -81,10 +82,11 @@ const ReportsReviewTable = ({
       <StatusBadge
         backgroundColor={`${color}100`}
         textColor={`${color}600`}
-        color={color}>
+        color={color}
+      >
         {getMessage(
           `page.details.panel.discussion.warnings.reports.dialog.reason.${reason}`,
-          reason,
+          reason
         )}
       </StatusBadge>
     );
@@ -96,8 +98,8 @@ const ReportsReviewTable = ({
     } else {
       onSelectionChange(
         [...selectedItems, selection].filter(
-          (item) => value || selection !== item,
-        ),
+          (item) => value || selection !== item
+        )
       );
     }
   };
@@ -127,7 +129,7 @@ const ReportsReviewTable = ({
         updateItems(updatedItems);
         onSelectionChange(selectedItems.filter((_) => _ !== reportId));
         onBlockButtonsStateChange(
-          updatedItems.filter(isNotResolved).length === 0,
+          updatedItems.filter(isNotResolved).length === 0
         );
       }
     }
@@ -137,9 +139,9 @@ const ReportsReviewTable = ({
     (value) =>
       handleItemSelectionChange(
         unresolvedItems.map((_) => _.id),
-        value,
+        value
       ),
-    [unresolvedItems, handleItemSelectionChange],
+    [unresolvedItems, handleItemSelectionChange]
   );
 
   if (isEmpty(items)) {
@@ -156,7 +158,7 @@ const ReportsReviewTable = ({
             <Th>
               <BaseCheckbox
                 aria-label={getMessage(
-                  "page.details.panel.discussion.warnings.reports.dialog.selectAll",
+                  "page.details.panel.discussion.warnings.reports.dialog.selectAll"
                 )}
                 value={areAllItemsSelected()}
                 disabled={isEmpty(unresolvedItems)}
@@ -166,28 +168,28 @@ const ReportsReviewTable = ({
             <Th>
               <Typography variant="sigma">
                 {getMessage(
-                  "page.details.panel.discussion.warnings.reports.dialog.reason",
+                  "page.details.panel.discussion.warnings.reports.dialog.reason"
                 )}
               </Typography>
             </Th>
             <Th>
               <Typography variant="sigma">
                 {getMessage(
-                  "page.details.panel.discussion.warnings.reports.dialog.content",
+                  "page.details.panel.discussion.warnings.reports.dialog.content"
                 )}
               </Typography>
             </Th>
             <Th>
               <Typography variant="sigma">
                 {getMessage(
-                  "page.details.panel.discussion.warnings.reports.dialog.createdAt",
+                  "page.details.panel.discussion.warnings.reports.dialog.createdAt"
                 )}
               </Typography>
             </Th>
             <Th>
               <Typography variant="sigma">
                 {getMessage(
-                  "page.details.panel.discussion.warnings.reports.dialog.status",
+                  "page.details.panel.discussion.warnings.reports.dialog.status"
                 )}
               </Typography>
             </Th>
@@ -195,7 +197,7 @@ const ReportsReviewTable = ({
               <Th>
                 <VisuallyHidden>
                   {getMessage(
-                    "page.details.panel.discussion.warnings.reports.dialog.actions",
+                    "page.details.panel.discussion.warnings.reports.dialog.actions"
                   )}
                 </VisuallyHidden>
               </Th>
@@ -208,12 +210,12 @@ const ReportsReviewTable = ({
               <Td>
                 <BaseCheckbox
                   aria-label={getMessage(
-                    "page.details.panel.discussion.warnings.reports.dialog.select",
+                    "page.details.panel.discussion.warnings.reports.dialog.select"
                   )}
                   value={isItemSelected(entry.id)}
                   disabled={entry.resolved}
                   onValueChange={(value) =>
-                  handleItemSelectionChange(entry.id, value)
+                    handleItemSelectionChange(entry.id, value)
                   }
                 />
               </Td>
@@ -242,10 +244,11 @@ const ReportsReviewTable = ({
                         isSingle
                         onClick={() => handleClickResolve(entry.id)}
                         startIcon={check}
-                        variant="success">
+                        variant="success"
+                      >
                         {getMessage(
                           "page.details.panel.discussion.warnings.reports.dialog.actions.resolve",
-                          "resolve",
+                          "resolve"
                         )}
                       </ActionButton>
                     </Flex>
@@ -260,7 +263,5 @@ const ReportsReviewTable = ({
   }
   return null;
 };
-
-
 
 export default ReportsReviewTable;

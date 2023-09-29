@@ -11,8 +11,8 @@ export const fetchData = async (queryParams, toggleNotification) => {
       getApiURL(
         `moderate/all${
           queryParams ? `?${stringify(queryParams, { encode: false })}` : ""
-        }`,
-      ),
+        }`
+      )
     );
 
     return data;

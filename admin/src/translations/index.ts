@@ -9,7 +9,7 @@ import pl from "./pl.json";
 
 export type TranslationKey = "en" | "fr" | "pt-BR" | "tr" | "ru" | "zh-Hans" | "pl";
 export type Translations = {
-  [key in TranslationKey]: KeyValueSet<string>
+  [key in TranslationKey]: KeyValueSet<string>;
 };
 
 const trads: Translations = {

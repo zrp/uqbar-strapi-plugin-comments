@@ -105,7 +105,14 @@ export = ({ strapi }: StrapiContext): IServiceCommon => ({
     const defaultSelect: Array<CommentModelKeys> = ["id", "related"];
 
     const populateClause: PopulateClause<CommentModelKeys> = {
-      authorUser: true,
+      authorUser: {
+        populate: {
+          professional: {
+            select: ["id", "slug"],
+            populate: ["photo"],
+          },
+        },
+      },
       ...(isObject(populate) ? populate : {}),
     };
     const doNotPopulateAuthor: Array<string> = isAdmin 

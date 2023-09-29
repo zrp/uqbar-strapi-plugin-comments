@@ -25,7 +25,7 @@ const useConfig = (toggleNotification) => {
   const handleSuccess = (
     type,
     callback = () => {},
-    invalidateQueries = true,
+    invalidateQueries = true
   ) => {
     if (invalidateQueries) {
       queryClient.invalidateQueries("get-config");

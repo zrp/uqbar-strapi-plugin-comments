@@ -1,9 +1,10 @@
 import React from "react";
 import { AdminAvatarWrapper, AdminShield } from "./styles";
 // @ts-ignore
-import {Shield} from "@strapi/icons";
+import { Shield } from "@strapi/icons";
 // @ts-ignore
-import {Icon} from "@strapi/design-system/Icon";
+import { Icon } from "@strapi/design-system/Icon";
+
 
 const AdminAvatar: React.FC<React.PropsWithChildren<{}>>  = ({ children } ) => {
     return ( 

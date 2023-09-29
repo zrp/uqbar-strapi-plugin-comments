@@ -15,7 +15,11 @@ import { isNil, isEmpty, noop } from "lodash";
 import { Flex } from "@strapi/design-system/Flex";
 import { IconButton } from "@strapi/design-system/IconButton";
 import { trash, pencil, plus } from "../../components/icons";
-import { useNotification, useOverlayBlocker, auth } from "@strapi/helper-plugin";
+import {
+  useNotification,
+  useOverlayBlocker,
+  auth,
+} from "@strapi/helper-plugin";
 import {
   getMessage,
   getUrl,
@@ -32,7 +36,7 @@ import {
   unblockItem,
   unblockItemThread,
   resolveAllAbuseReportsForThread,
-  deleteItem
+  deleteItem,
 } from "../../pages/utils/api";
 import { pluginId } from "../../pluginId";
 import { lock, unlock, eye } from "../icons";
@@ -64,7 +68,7 @@ const DiscussionThreadItemActions = ({
     isAdminComment,
   } = item;
 
-  const user: StrapiAdminUser = auth.get('userInfo')
+  const user: StrapiAdminUser = auth.get("userInfo");
 
   const [blockConfirmationVisible, setBlockConfirmationVisible] =
     useState(false);
@@ -72,11 +76,9 @@ const DiscussionThreadItemActions = ({
     useState(false);
   const [blockButtonsDisabled, setBlockButtonsDisabled] =
     useState(blockedThread);
-  const [startThreadVisible, setStartThreadVisible] =
-    useState(false);
-  
-  const [updateCommentVisible, setUpdateCommentVisible] = 
-    useState(false);
+  const [startThreadVisible, setStartThreadVisible] = useState(false);
+
+  const [updateCommentVisible, setUpdateCommentVisible] = useState(false);
 
   const { push } = useHistory();
   const toggleNotification = useNotification();
@@ -102,23 +104,45 @@ const DiscussionThreadItemActions = ({
   const mutationConfig = (message = "", sideEffectCallback = noop) => {
     return {
       onSuccess: onSuccess(message, sideEffectCallback),
-      onError
+      onError,
     };
   };
 
   const resolveAllAbuseReportsForThreadMutation = useMutation(
-    resolveAllAbuseReportsForThread, mutationConfig()
+    resolveAllAbuseReportsForThread,
+    mutationConfig()
   );
 
-  const blockItemMutation = useMutation(blockItem, mutationConfig("page.details.actions.comment.block.confirmation.success", setBlockConfirmationVisible));
+  const blockItemMutation = useMutation(
+    blockItem,
+    mutationConfig(
+      "page.details.actions.comment.block.confirmation.success",
+      setBlockConfirmationVisible
+    )
+  );
 
-  const unblockItemMutation = useMutation(unblockItem, mutationConfig("page.details.actions.comment.unblock.confirmation.success"));
+  const unblockItemMutation = useMutation(
+    unblockItem,
+    mutationConfig("page.details.actions.comment.unblock.confirmation.success")
+  );
 
-  const blockItemThreadMutation = useMutation(blockItemThread, mutationConfig("page.details.actions.thread.block.confirmation.success", setBlockThreadConfirmationVisible));
+  const blockItemThreadMutation = useMutation(
+    blockItemThread,
+    mutationConfig(
+      "page.details.actions.thread.block.confirmation.success",
+      setBlockThreadConfirmationVisible
+    )
+  );
 
-  const unblockItemThreadMutation = useMutation(unblockItemThread, mutationConfig("page.details.actions.thread.unblock.confirmation.success"));
+  const unblockItemThreadMutation = useMutation(
+    unblockItemThread,
+    mutationConfig("page.details.actions.thread.unblock.confirmation.success")
+  );
 
-  const deleteItemMutation = useMutation(deleteItem, mutationConfig("page.details.actions.comment.delete.confirmation.success"));
+  const deleteItemMutation = useMutation(
+    deleteItem,
+    mutationConfig("page.details.actions.comment.delete.confirmation.success")
+  );
 
   const isAdminAuthor = String(user?.id) === author?.id;
 
@@ -133,7 +157,6 @@ const DiscussionThreadItemActions = ({
   const hasActiveThread =
     gotThread && !(removed || preview || pinned || blockedThread);
   const isStatusBadgeVisible = isBlocked || reviewFlowEnabled;
-
   const renderStatus = (props) => {
     const status = resolveCommentStatus({ ...props, reviewFlowEnabled });
     const color = resolveCommentStatusColor(status);
@@ -211,11 +234,11 @@ const DiscussionThreadItemActions = ({
 
   const toggleStartThreadVisibility = () => {
     setStartThreadVisible(!startThreadVisible);
-  }
+  };
 
   const toggleUpdateCommentVisibility = () => {
     setUpdateCommentVisible(!updateCommentVisible);
-  }
+  };
 
   const handleUnblockThreadClick = () => {
     if (canModerate) {
@@ -237,7 +260,6 @@ const DiscussionThreadItemActions = ({
 
   const anyGroupButtonsVisible =
     needsApproval || reviewFlowEnabled || !blockedThread;
-
 
   if (removed || isRejected || !canModerate) {
     return (
@@ -263,10 +285,7 @@ const DiscussionThreadItemActions = ({
             loading={blockItemThreadMutation.isLoading}
             variant="danger"
           >
-            {getMessage(
-              "page.details.actions.thread.block", 
-              "Block thread"
-            )}
+            {getMessage("page.details.actions.thread.block", "Block thread")}
           </ActionButton>
         )}
         {blockedThread && (gotThread || pinned) && (
@@ -324,6 +343,7 @@ const DiscussionThreadItemActions = ({
                 )}
               />
             )}
+
             {isRemovable && (
               <IconButton
                 onClick={handleDeleteClick}
@@ -376,26 +396,22 @@ const DiscussionThreadItemActions = ({
           </IconButtonGroupStyled>
         )}
       </DiscussionThreadItemActionsWrapper>
-      {startThreadVisible && 
+      {startThreadVisible && (
         <ModeratorResponseModal
           content=""
           id={id}
-          title={getMessage(
-            "page.details.actions.thread.modal.start.thread"
-          )}
+          title={getMessage("page.details.actions.thread.modal.start.thread")}
           onClose={toggleStartThreadVisibility}
         />
-      }
-      {updateCommentVisible && 
+      )}
+      {updateCommentVisible && (
         <ModeratorResponseModal
           content={content}
           id={id}
-          title={getMessage(
-            "page.details.actions.thread.modal.update.comment"
-          )}
+          title={getMessage("page.details.actions.thread.modal.update.comment")}
           onClose={toggleUpdateCommentVisibility}
         />
-      }
+      )}
       {!blocked && (
         <ConfirmationDialog
           isVisible={blockConfirmationVisible}

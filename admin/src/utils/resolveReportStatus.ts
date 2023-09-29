@@ -1,10 +1,10 @@
-import {isNil} from 'lodash';
-import {ToBeFixed} from '../../../types';
-import {REPORT_STATUS} from './constants';
+import { isNil } from "lodash";
+import { ToBeFixed } from "../../../types";
+import { REPORT_STATUS } from "./constants";
 
 const resolveReportStatus = ({
   resolved,
-  related: {blocked, blockedThread},
+  related: { blocked, blockedThread },
   approvalStatus,
 }: ToBeFixed) => {
   const gotApprovalFlow = !isNil(approvalStatus);

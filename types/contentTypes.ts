@@ -2,6 +2,12 @@ import { OnlyStrings, StrapiUser, StringMap } from "strapi-typed";
 
 export type Id = number | string;
 
+interface User extends StrapiUser {
+  name: string;
+  otherName: string;
+  type: string;
+}
+
 export type Comment<TAuthor = CommentAuthor> = {
   id: Id;
   content: string;
@@ -36,7 +42,7 @@ export type CommentAuthorPartial = {
   authorName?: string;
   authorEmail?: string;
   authorAvatar?: string;
-  authorUser?: StrapiUser;
+  authorUser?: User;
 };
 
 export type CommentAuthorResolved<TExtension = StringMap<unknown>> =

@@ -7,7 +7,7 @@ import { Box } from "@strapi/design-system/Box";
 import { Avatar, Initials } from "@strapi/design-system/Avatar";
 
 export const AdminAvatarWrapper = styled(Box)`
-    position: relative;
+  position: relative;
 `;
 
 export const AdminShield = styled(Box)`
@@ -23,3 +23,4 @@ export const AdminShield = styled(Box)`
 
     background: #ffffff;
 `;
+

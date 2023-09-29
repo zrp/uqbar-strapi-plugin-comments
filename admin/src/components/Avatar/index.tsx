@@ -50,6 +50,7 @@ const UserAvatar: React.FC<IProps> = ({
   ) : name ? (
     <Initials>{renderInitials(name)}</Initials>
   ) : null;
+
 };
 
 export default UserAvatar;
