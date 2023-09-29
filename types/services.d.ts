@@ -42,6 +42,7 @@ export type FindAllFlatProps<T, TFields = keyof T> = {
   sort?: StringMap<unknown>;
   fields?: StrapiRequestQueryFieldsClause<OnlyStrings<TFields>>;
   pagination?: StrapiPagination;
+  isAdmin?: boolean
 };
 
 export type FindAllInHierarchyProps = Omit<FindAllFlatProps, "pagination"> & {
@@ -86,6 +87,11 @@ export interface IServiceCommon {
     relatedEntity?: RelatedEntity | null | boolean
   ): Promise<Array<Comment>>;
   findOne(criteria: WhereClause): Promise<Comment>;
+  findAllPerAuthor(
+    props: FindAllFlatProps<Comment>,
+    authorId: Id,
+    isStrapiAuthor?: boolean
+  ): Promise<StrapiPaginatedResponse<Comment>>;
   findRelatedEntitiesFor(entities: Array<Comment>): Promise<RelatedEntity[]>;
   mergeRelatedEntityTo(
     entity: ToBeFixed,
@@ -98,7 +104,8 @@ export interface IServiceCommon {
   ): Promise<boolean>;
   sanitizeCommentEntity(
     entity: Comment,
-    populate?: PopulateClause<OnlyStrings<keyof StrapiUser>>
+    blockedAuthorProps: string[],
+    populate?: PopulateClause<OnlyStrings<keyof StrapiUser>>,
   ): Comment;
   isValidUserContext(user?: any): boolean;
   parseRelationString(

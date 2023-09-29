@@ -81,6 +81,7 @@ const ModeratorResponse: React.FC<ModeratorResponseProps> = ({
         message: `${pluginId}.${message}`,
       });
       stateAction(false);
+      setCommentField('');
       unlockApp();
     };
 
@@ -161,7 +162,7 @@ const ModeratorResponse: React.FC<ModeratorResponseProps> = ({
             </Button>
           )}
           <Button
-            variant="tertiary"
+            variant="primary"
             onClick={handleSave}
             disabled={isFieldEmpty}
           >

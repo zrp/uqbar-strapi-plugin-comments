@@ -72,21 +72,12 @@ export default {
     registerCustomFields(app);
   },
 
-  // bootstrap(app: ToBeFixed) {
-  //   // app.injectContentManagerComponent('editView', 'informations', {
-  //   //     name: 'comments-link',
-  //   //     Component: () => 'TODO: Comments count',
-  //   // });
-  // },
-
-  registerTrads({ locales }: { locales: Array<TranslationKey> }) {
-    return locales.map((locale: string) => {
+  registerTrads({ locales = [] }: { locales: Array<TranslationKey>}) {
+    return locales
+    .filter((locale: string) => Object.keys(trads).includes(locale))
+    .map((locale: string) => {
       return {
-        data: prefixPluginTranslations(
-          get<Translations, TranslationKey>(trads, locale as TranslationKey),
-          pluginId,
-          {}
-        ),
+        data: prefixPluginTranslations(get<Translations, TranslationKey>(trads, locale as TranslationKey, trads.en), pluginId, {}),
         locale,
       };
     });

@@ -29,22 +29,28 @@ const UserAvatar: React.FC<IProps> = ({
 }) => {
   if (avatar) {
     let image = avatar;
+
     if (isObject(avatar)) {
       image = avatar?.formats?.thumbnail.url || avatar.url;
     }
+
     return isAdminComment ? (
-      <AdminAvatar>{image && <Avatar src={image} alt={name} />}</AdminAvatar>
-    ) : (
-      image && <Avatar src={image} alt={name} />
-    );
+      <AdminAvatar>
+        {image ? <Avatar src={image} alt={name} /> : null}
+      </AdminAvatar>
+    ) : image ? (
+      <Avatar src={image} alt={name} />
+    ) : null;
   }
+
   return isAdminComment ? (
     <AdminAvatar>
-      {name && <Initials>{renderInitials(name)}</Initials>}
+      {name ? <Initials>{renderInitials(name)}</Initials> : null}
     </AdminAvatar>
-  ) : (
-    name && <Initials>{renderInitials(name)}</Initials>
-  );
+  ) : name ? (
+    <Initials>{renderInitials(name)}</Initials>
+  ) : null;
+
 };
 
 export default UserAvatar;

@@ -1,7 +1,7 @@
 // TODO;
 // @ts-nocheck
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import { isNil, isEmpty } from "lodash";
@@ -26,6 +26,9 @@ import { IconButtonGroupStyled } from "../../../../components/IconButton/styles"
 import DiscussionThreadItemReviewAction from "../../../../components/DiscussionThreadItemReviewAction";
 import UserAvatar from "../../../../components/Avatar";
 import TableRows from "@strapi/admin";
+
+import sanitizeHtml from '../../../../components/PreviewWysiwyg/utils/satinizeHtml';
+import md from "../../../../components/PreviewWysiwyg/utils/mdRenderer";
 
 const DiscoverTableRow = ({
   config,
@@ -91,6 +94,12 @@ const DiscoverTableRow = ({
     updatedAt,
   } = item;
 
+
+  const sanitizedContent = useMemo(() => sanitizeHtml(md.render(content || ''), {
+    allowedTags: [],
+    allowedAttributes: {}
+  }), [content]);
+
   return (
     <TrCustom key={id} onClick={handleClick}>
       <Td>
@@ -114,7 +123,7 @@ const DiscoverTableRow = ({
       </Td>
       <Td style={{ maxWidth: "30vw" }}>
         <Typography textColor="neutral800" ellipsis>
-          {content}
+          {sanitizedContent}
         </Typography>
       </Td>
       <Td>

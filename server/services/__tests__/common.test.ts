@@ -138,7 +138,7 @@ describe("Test Comments service - Common", () => {
     test("Should return exact the same value", () => {
       const input = { ...sample };
       const output =
-        getPluginService<IServiceCommon>("common").sanitizeCommentEntity(input);
+        getPluginService<IServiceCommon>("common").sanitizeCommentEntity(input, []);
       expect(output).toHaveProperty("id", input.id);
       expect(output).toHaveProperty("content", input.content);
       expect(output).toHaveProperty("blocked", input.blocked);
@@ -151,7 +151,7 @@ describe("Test Comments service - Common", () => {
         ...authorGenericSample,
       };
       const output =
-        getPluginService<IServiceCommon>("common").sanitizeCommentEntity(input);
+        getPluginService<IServiceCommon>("common").sanitizeCommentEntity(input, []);
 
       expect(output).toHaveProperty("author");
       expect(output).toHaveProperty("author.id", input.authorId);
@@ -172,7 +172,7 @@ describe("Test Comments service - Common", () => {
         authorUser: authorSample,
       };
       const output =
-        getPluginService<IServiceCommon>("common").sanitizeCommentEntity(input);
+        getPluginService<IServiceCommon>("common").sanitizeCommentEntity(input, []);
 
       expect(output).toHaveProperty("author");
       expect(output).toHaveProperty("author.id", input.authorUser.id);
@@ -186,6 +186,24 @@ describe("Test Comments service - Common", () => {
 
       expect(output).not.toHaveProperty("author.password");
     });
+
+    test("Should filter out author properties", () => {
+      const input = {
+        ...sample,
+        authorUser: authorSample,
+      };
+      const output =
+        getPluginService<IServiceCommon>("common").sanitizeCommentEntity(input, ["email"]);
+
+      expect(output).toHaveProperty("author");
+      expect(output).toHaveProperty("author.id", outputAuthorSample.id);
+      expect(output).toHaveProperty("author.name", outputAuthorSample.name);
+      expect(output).not.toHaveProperty("author.email");
+
+      expect(output).not.toHaveProperty("authorUser");
+
+      expect(output).not.toHaveProperty("author.password");
+    })
   });
 
   describe("Bad Words filtering", () => {
@@ -453,10 +471,10 @@ describe("Test Comments service - Common", () => {
         expect(result).toHaveProperty("data");
         expect(result).not.toHaveProperty("meta");
         expect(result.data.length).toBe(4);
-        expect(Object.keys(filterOutUndefined(result.data[0]))).toHaveLength(6);
-        expect(Object.keys(filterOutUndefined(result.data[1]))).toHaveLength(6);
-        expect(Object.keys(filterOutUndefined(result.data[2]))).toHaveLength(6);
-        expect(Object.keys(filterOutUndefined(result.data[3]))).toHaveLength(6);
+        expect(Object.keys(filterOutUndefined(result.data[0]))).toHaveLength(7);
+        expect(Object.keys(filterOutUndefined(result.data[1]))).toHaveLength(7);
+        expect(Object.keys(filterOutUndefined(result.data[2]))).toHaveLength(7);
+        expect(Object.keys(filterOutUndefined(result.data[3]))).toHaveLength(7);
       });
 
       test("Should return structure with populated avatar field", async () => {
@@ -593,6 +611,176 @@ describe("Test Comments service - Common", () => {
         expect(result).toHaveProperty([0, "content"], db[1].content);
         expect(result).toHaveProperty([0, "children"]);
         expect(result[0]?.children?.length).toBe(0);
+      });
+    });
+
+    describe("findAllPerAuthor", () => {
+      const authorId = 1;
+
+      describe("Generic author", () => {
+        let spy;
+
+        beforeEach(() => {
+          spy = jest
+            .spyOn(global.strapi.db, "query")
+              // @ts-ignore
+              .mockImplementation((type: string) => ({
+                findMany: async (_: any) => 
+                  new Promise((resolve) => {
+                    switch (type) {
+                      case "plugins::comments.comment":
+                        return resolve(db.filter(item => item.authorId === _.where.authorId));
+                      default:
+                        return resolve([relatedEntity]);
+                    }
+                  }),
+                findWithCount: async ({ where }: any) => 
+                  new Promise((resolve) => {
+                    switch (type) {
+                      case "plugins::comments.comment":
+                        const filteredDB = db.filter(item => (item.authorId === where.authorId) && (item.threadOf === where.threadOf));
+                        return resolve([filteredDB.length, filteredDB]);
+                      default:
+                        return resolve([1, relatedEntity]);
+                    }
+                  }),
+              }));
+        });
+
+        afterEach(() => {
+          spy.mockRestore();
+        });
+
+        test("Should return proper structure", async () => {
+          const result = await getPluginService<IServiceCommon>(
+            "common"
+          ).findAllPerAuthor({ }, authorId);
+          expect(result).toHaveProperty("data");
+          expect(result).not.toHaveProperty("meta");
+          expect(result.data.length).toBe(3);
+          expect(result).not.toHaveProperty(["data", 0, "author"]);
+          expect(result).not.toHaveProperty(["data", 1, "author"]);
+          expect(result).not.toHaveProperty(["data", 2, "author"]);
+          expect(result).toHaveProperty(["data", 0, "content"], db[0].content);
+          expect(result).toHaveProperty(["data", 2, "content"], db[2].content);
+        });
+
+        test("Should return structure with selected fields only (+mandatory ones for logic)", async () => {
+          // Default fields are: id, related, threadOf, gotThread
+          const result = await getPluginService<IServiceCommon>(
+            "common"
+          ).findAllPerAuthor(
+            { fields: ["content"] },
+            authorId
+          );
+          expect(result).toHaveProperty("data");
+          expect(result).not.toHaveProperty("meta");
+          expect(result.data.length).toBe(3);
+          expect(result).not.toHaveProperty(["data", 0, "author"]);
+          expect(result).not.toHaveProperty(["data", 1, "author"]);
+          expect(result).not.toHaveProperty(["data", 2, "author"]);
+          expect(Object.keys(filterOutUndefined(result.data[0]))).toHaveLength(5);
+          expect(Object.keys(filterOutUndefined(result.data[1]))).toHaveLength(6);
+          expect(Object.keys(filterOutUndefined(result.data[2]))).toHaveLength(5);
+        });
+  
+        test("Should return structure with pagination", async () => {
+          const result = await getPluginService<IServiceCommon>(
+            "common"
+          ).findAllPerAuthor(
+            { pagination: { page: 1, pageSize: 5 } },
+            authorId
+          );
+          expect(result).toHaveProperty("data");
+          expect(result).toHaveProperty("meta");
+          expect(result.data.length).toBe(3);
+          expect(result).toHaveProperty(["data", 0, "content"], db[0].content);
+          expect(result).toHaveProperty(["data", 2, "content"], db[2].content);
+          expect(result).not.toHaveProperty(["data", 0, "author"]);
+          expect(result).not.toHaveProperty(["data", 1, "author"]);
+          expect(result).not.toHaveProperty(["data", 2, "author"]);
+          expect(result).toHaveProperty(["meta", "pagination", "page"], 1);
+          expect(result).toHaveProperty(["meta", "pagination", "pageSize"], 5);
+        });
+      });
+
+      describe("Strapi author", () => {
+        let spy;
+
+        beforeEach(() => {
+          spy = jest
+            .spyOn(global.strapi.db, "query")
+              // @ts-ignore
+              .mockImplementation((type: string) => ({
+                findMany: async (_: any) => 
+                  new Promise((resolve) => {
+                    switch (type) {
+                      case "plugins::comments.comment":
+                        return resolve(db.filter(item => item?.authorUser?.id === _.where?.authorUser?.id));
+                      default:
+                        return resolve([relatedEntity]);
+                    }
+                  }),
+                findWithCount: async ({ where }: any) => 
+                  new Promise((resolve) => {
+                    switch (type) {
+                      case "plugins::comments.comment":
+                        const filteredDB = db.filter(item => (item?.authorUser?.id === where?.authorUser?.id) && (item.threadOf === where.threadOf));
+                        return resolve([filteredDB.length, filteredDB]);
+                      default:
+                        return resolve([1, relatedEntity]);
+                    }
+                  }),
+              }));
+        });
+
+        afterEach(() => {
+          spy.mockRestore();
+        });
+
+        test("Should return proper structure", async () => {
+          const result = await getPluginService<IServiceCommon>(
+            "common"
+          ).findAllPerAuthor({ }, authorId, true);
+          expect(result).toHaveProperty("data");
+          expect(result).not.toHaveProperty("meta");
+          expect(result.data.length).toBe(1);
+          expect(result).not.toHaveProperty(["data", 0, "author"]);
+          expect(result).toHaveProperty(["data", 0, "content"], db[3].content);
+        });
+
+        test("Should return structure with selected fields only (+mandatory ones for logic)", async () => {
+          // Default fields are: id, related, threadOf, gotThread
+          const result = await getPluginService<IServiceCommon>(
+            "common"
+          ).findAllPerAuthor(
+            { fields: ["content"] },
+            authorId,
+            true
+          );
+          expect(result).toHaveProperty("data");
+          expect(result).not.toHaveProperty("meta");
+          expect(result.data.length).toBe(1);
+          expect(result).not.toHaveProperty(["data", 0, "author"]);
+          expect(Object.keys(filterOutUndefined(result.data[0]))).toHaveLength(5);
+        });
+  
+        test("Should return structure with pagination", async () => {
+          const result = await getPluginService<IServiceCommon>(
+            "common"
+          ).findAllPerAuthor(
+            { pagination: { page: 1, pageSize: 5 } },
+            authorId,
+            true
+          );
+          expect(result).toHaveProperty("data");
+          expect(result).toHaveProperty("meta");
+          expect(result.data.length).toBe(1);
+          expect(result).toHaveProperty(["data", 0, "content"], db[3].content);
+          expect(result).not.toHaveProperty(["data", 0, "author"]);
+          expect(result).toHaveProperty(["meta", "pagination", "page"], 1);
+          expect(result).toHaveProperty(["meta", "pagination", "pageSize"], 5);
+        });
       });
     });
 
