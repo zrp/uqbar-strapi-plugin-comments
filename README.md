@@ -957,3 +957,4 @@ For general help using Strapi, please refer to [the official Strapi documentatio
 ## 📝 License
 
 [MIT License](LICENSE.md) Copyright (c) [VirtusLab Sp. z o.o.](https://virtuslab.com/) &amp; [Strapi Solutions](https://strapi.io/).
+
