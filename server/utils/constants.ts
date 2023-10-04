@@ -6,12 +6,18 @@ export const CONFIG_PARAMS: ConfigParamKeys = {
   ENTRY_LABEL: "entryLabel",
   MODERATOR_ROLES: "moderatorRoles",
   BAD_WORDS: "badWords",
+  AUTHOR_BLOCKED_PROPS: "blockedAuthorProps",
 };
 
 export const APPROVAL_STATUS = {
   PENDING: "PENDING",
   APPROVED: "APPROVED",
   REJECTED: "REJECTED",
+};
+
+export const AUTHOR_TYPE = {
+  GENERIC: 'GENERIC',
+  STRAPI: 'STRAPI',
 };
 
 export const REGEX: RegExpCollection = {

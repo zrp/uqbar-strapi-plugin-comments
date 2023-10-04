@@ -5,14 +5,15 @@
  */
 
 //@ts-nocheck
-import React, { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
-import CodeMirror from "codemirror";
-import "codemirror/addon/display/placeholder";
-import PreviewWysiwyg from "../PreviewWysiwyg";
-import { EditorStylesContainer } from "./EditorStylesContainer";
-import { EditorAndPreviewWrapper } from "./WysiwygStyles";
-import newlineAndIndentContinueMarkdownList from "./utils/continueList";
+import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { isString } from 'lodash';
+import CodeMirror from 'codemirror5';
+import 'codemirror5/addon/display/placeholder';
+import PreviewWysiwyg from '../PreviewWysiwyg';
+import { EditorStylesContainer } from './EditorStylesContainer';
+import { EditorAndPreviewWrapper } from './WysiwygStyles';
+import newlineAndIndentContinueMarkdownList from './utils/continueList';
 
 type EditorProps = {
   disabled?: boolean;
@@ -66,7 +67,7 @@ const Editor: React.FC<EditorProps> = ({
   }, [editorRef, textareaRef, name, placeholder]);
 
   useEffect(() => {
-    if (value && !editorRef.current.state.focused) {
+    if (isString(value) && !editorRef.current.state.focused) {
       editorRef.current.setValue(value);
     }
   }, [editorRef, value]);

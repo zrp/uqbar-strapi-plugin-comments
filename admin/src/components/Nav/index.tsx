@@ -15,7 +15,7 @@ import {
   SubNavSections,
   SubNavLink,
 } from "@strapi/design-system/SubNav";
-import { apps } from "../icons";
+import { discuss, thumbDown } from "../icons";
 import getMessage from "../../utils/getMessage";
 
 // import PropTypes from 'prop-types';
@@ -38,14 +38,16 @@ const Nav = ({ visible = false, hasNewComments, hasNewReports }) => {
         >
           {getMessage("nav.item.updates")}
         </SubNavLink> */}
-        <SubNavSection label={getMessage("nav.header.moderation")}>
-          <SubNavLink to={getUrl("discover")} icon={apps}>
-            {getMessage("nav.item.discover")}
+
+        <SubNavSection label={getMessage('nav.header.moderation')}>
+          <SubNavLink to={getUrl('discover')} icon={discuss}>
+            {getMessage('nav.item.discover')}
+
           </SubNavLink>
           {/* <SubNavLink
             to={getUrl('reports')}
             withBullet={hasNewReports}
-            icon={apps}>
+            icon={thumbDown}>
             {getMessage('nav.item.reports')}
           </SubNavLink> */}
         </SubNavSection>

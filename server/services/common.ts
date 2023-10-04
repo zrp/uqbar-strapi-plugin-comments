@@ -8,15 +8,12 @@ import {
   isEmpty,
   first,
   parseInt,
-  set,
   get,
-  uniq,
 } from "lodash";
 import {
   Id,
   StrapiContext,
   StrapiStore,
-  StrapiPagination,
   StrapiResponseMeta,
   StrapiPaginatedResponse,
   StrapiDBQueryArgs,
@@ -36,7 +33,7 @@ import {
   CommentModelKeys,
   SettingsCommentsPluginConfig,
 } from "../../types";
-import { REGEX, CONFIG_PARAMS } from "../utils/constants";
+import { CONFIG_PARAMS } from "../utils/constants";
 import PluginError from "./../utils/error";
 import {
   getModelUid,
@@ -46,6 +43,11 @@ import {
   buildAuthorModel,
   buildConfigQueryProp,
 } from "./utils/functions";
+import { 
+  parseFieldsQuery,
+  parsePaginationsQuery,
+  parseSortQuery
+} from "./utils/parsers";
 
 /**
  * Comments Plugin - common services
@@ -96,6 +98,7 @@ export = ({ strapi }: StrapiContext): IServiceCommon => ({
       sort,
       pagination,
       fields,
+      isAdmin = false,
     }: FindAllFlatProps<Comment>,
     relatedEntity: RelatedEntity | null = null
   ): Promise<StrapiPaginatedResponse<Comment>> {
@@ -112,70 +115,15 @@ export = ({ strapi }: StrapiContext): IServiceCommon => ({
       },
       ...(isObject(populate) ? populate : {}),
     };
+    const doNotPopulateAuthor: Array<string> = isAdmin 
+      ? [] 
+      : await this.getConfig<
+        Array<string>
+      >(CONFIG_PARAMS.AUTHOR_BLOCKED_PROPS, []);
 
-    let queryExtension: StrapiDBQueryArgs<CommentModelKeys> = {};
-
-    if (sort && (isString(sort) || isArray(sort))) {
-      queryExtension = {
-        ...queryExtension,
-        orderBy: (isString(sort) ? [sort] : sort)
-          .map((_) => (REGEX.sorting.test(_) ? _ : `${_}:asc`))
-          .reduce((prev, curr) => {
-            const [type = "asc", ...parts] = curr.split(":").reverse();
-            return { ...set(prev, parts.reverse().join("."), type) };
-          }, {}),
-      };
-    }
-
-    if (!isNil(fields)) {
-      queryExtension = {
-        ...queryExtension,
-        select: isArray(fields) ? uniq([...fields, ...defaultSelect]) : fields,
-      };
-    }
-
-    let meta: StrapiResponseMeta = {} as StrapiResponseMeta;
-    if (pagination && isObject(pagination)) {
-      const parsedpagination: StrapiPagination = Object.keys(pagination).reduce(
-        (prev: StrapiPagination, curr: string) => ({
-          ...prev,
-          [curr]: parseInt(get(pagination, curr)),
-        }),
-        {}
-      );
-      const {
-        page = 1,
-        pageSize = PAGE_SIZE,
-        start = 0,
-        limit = PAGE_SIZE,
-      } = parsedpagination;
-      const paginationByPage =
-        !isNil(parsedpagination?.page) || !isNil(parsedpagination?.pageSize);
-
-      queryExtension = {
-        ...queryExtension,
-        offset: paginationByPage ? (page - 1) * pageSize : start,
-        limit: paginationByPage ? pageSize : limit,
-      };
-
-      const metapagination = paginationByPage
-        ? {
-            pagination: {
-              page,
-              pageSize,
-            },
-          }
-        : {
-            pagination: {
-              start,
-              limit,
-            },
-          };
-
-      meta = {
-        ...metapagination,
-      };
-    }
+    const sortQuery = parseSortQuery(sort);
+    const fieldsQuery = parseFieldsQuery(fields, sortQuery, defaultSelect);
+    let [meta, queryExtension = {}]: [StrapiResponseMeta, StrapiDBQueryArgs<CommentModelKeys>] = parsePaginationsQuery(pagination, fieldsQuery, { PAGE_SIZE });
 
     const entries = await strapi.db
       .query<Comment>(getModelUid("comment"))
@@ -264,13 +212,18 @@ export = ({ strapi }: StrapiContext): IServiceCommon => ({
             : populateClause.authorUser;
       }
 
+      const primitiveThreadOf = isString(parsedThreadOf) || isNumber(parsedThreadOf) ?
+        parsedThreadOf :
+        null;
+
       return this.sanitizeCommentEntity(
         {
           ..._,
-          threadOf: parsedThreadOf || _.threadOf || null,
+          threadOf: primitiveThreadOf || _.threadOf,
           gotThread: (threadedItem?.itemsInTread || 0) > 0,
           threadFirstItemId: threadedItem?.firstThreadItemId,
         },
+        doNotPopulateAuthor,
         authorUserPopulate
       );
     });
@@ -295,11 +248,12 @@ export = ({ strapi }: StrapiContext): IServiceCommon => ({
       fields,
       startingFromId = null,
       dropBlockedThreads = false,
+      isAdmin = false,
     }: FindAllInHierarchyProps,
     relatedEntity?: RelatedEntity | null | boolean
   ): Promise<Array<Comment>> {
     const entities = await this.findAllFlat(
-      { query, populate, sort, fields },
+      { query, populate, sort, fields, isAdmin },
       relatedEntity
     );
     return buildNestedStructure(
@@ -328,11 +282,57 @@ export = ({ strapi }: StrapiContext): IServiceCommon => ({
         "Comment does not exist. Check your payload please."
       );
     }
-    return filterOurResolvedReports(this.sanitizeCommentEntity(entity));
+    const doNotPopulateAuthor: Array<string> = await this.getConfig<
+      Array<string>
+    >(CONFIG_PARAMS.AUTHOR_BLOCKED_PROPS, []);
+    return filterOurResolvedReports(this.sanitizeCommentEntity(entity, doNotPopulateAuthor));
+  },
+
+  // Find all for author
+  async findAllPerAuthor(
+    this: IServiceCommon,
+    {
+      query = {},
+      populate = {},
+      pagination,
+      sort,
+      fields,
+      isAdmin = false,
+    }: FindAllFlatProps<Comment>,
+    authorId: Id,
+    isStrapiAuthor: boolean = false,
+  ): Promise<StrapiPaginatedResponse<Comment>> {
+    if (isNil(authorId)) {
+      return {
+        data: [],
+      };
+    }
+
+    const { related, ...restQuery } = query;
+
+    const authorQuery = isStrapiAuthor ? {
+      authorUser: {
+        id: authorId
+      },
+    } : {
+      authorId,
+    };
+
+    const response = await this.findAllFlat({ 
+      query: {
+        ...restQuery,
+        ...authorQuery,
+      },
+      pagination, populate, sort, fields, isAdmin 
+    });
+
+    return {
+      ...response,
+      data: response.data.map(({ author, ...rest }: Comment): Comment => rest),
+    };
   },
 
   // Find all related entiries
-
   async findRelatedEntitiesFor(
     entities: Array<Comment> = []
   ): Promise<Array<RelatedEntity>> {
@@ -420,7 +420,8 @@ export = ({ strapi }: StrapiContext): IServiceCommon => ({
 
   sanitizeCommentEntity(
     entity: Comment,
-    populate?: PopulateClause<OnlyStrings<keyof StrapiUser>>
+    blockedAuthorProps: string[],
+    populate?: PopulateClause<OnlyStrings<keyof StrapiUser>>,
   ): Comment {
     const fieldsToPopulate = isArray(populate)
       ? populate
@@ -431,10 +432,11 @@ export = ({ strapi }: StrapiContext): IServiceCommon => ({
         {
           ...entity,
           threadOf: isObject(entity.threadOf)
-            ? buildAuthorModel(entity.threadOf, fieldsToPopulate)
+            ? buildAuthorModel(entity.threadOf, blockedAuthorProps, fieldsToPopulate)
             : entity.threadOf,
         },
-        fieldsToPopulate
+        blockedAuthorProps,
+        fieldsToPopulate,
       ),
     };
   },
@@ -458,7 +460,7 @@ export = ({ strapi }: StrapiContext): IServiceCommon => ({
       Array<string>
     >(CONFIG_PARAMS.ENABLED_COLLECTIONS, []);
 
-    if (!isEnabledCollection) {
+    if (enabledCollections.length > 0 && !isEnabledCollection) {
       throw new PluginError(
         403,
         `Action not allowed for collection '${uid}'. Use one of: ${enabledCollections.join(

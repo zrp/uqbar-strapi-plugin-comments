@@ -44,7 +44,6 @@ import More from "@strapi/icons/More";
 import {
   MainButtons,
   CustomIconButton,
-  MoreButton,
   IconButtonGroupMargin,
   CustomLinkIconButton,
 } from "./WysiwygStyles";
@@ -74,10 +73,6 @@ const WysiwygNav: React.FC<WysiwygNavProps> = ({
 }) => {
   const [visiblePopover, setVisiblePopover] = useState<boolean>(false);
   const { formatMessage } = useIntl();
-  const selectPlaceholder = formatMessage({
-    id: "components.Wysiwyg.selectOptions.title",
-    defaultMessage: "Add a title",
-  });
   const buttonMoreRef = useRef();
 
   const handleTogglePopover = () => {
@@ -89,21 +84,6 @@ const WysiwygNav: React.FC<WysiwygNavProps> = ({
       <Box padding={2} background="neutral100">
         <Flex justifyContent="space-between">
           <Flex>
-            <Select
-              disabled
-              id="selectTitle"
-              placeholder={selectPlaceholder}
-              size="S"
-              aria-label={selectPlaceholder}
-            >
-              <Option value="h1">h1</Option>
-              <Option value="h2">h2</Option>
-              <Option value="h3">h3</Option>
-              <Option value="h4">h4</Option>
-              <Option value="h5">h5</Option>
-              <Option value="h6">h6</Option>
-            </Select>
-
             <MainButtons>
               <CustomIconButton
                 disabled
@@ -127,8 +107,6 @@ const WysiwygNav: React.FC<WysiwygNavProps> = ({
                 icon={<Underline />}
               />
             </MainButtons>
-
-            <MoreButton disabled id="more" label="More" icon={<More />} />
           </Flex>
 
           {!isExpandMode && (
@@ -152,20 +130,6 @@ const WysiwygNav: React.FC<WysiwygNavProps> = ({
     <Box padding={2} background="neutral100">
       <Flex justifyContent="space-between">
         <Flex>
-          <Select
-            id="selectTitle"
-            placeholder={selectPlaceholder}
-            size="S"
-            onChange={(value: string) => onActionClick(value, editorRef)}
-          >
-            <Option value="h1">h1</Option>
-            <Option value="h2">h2</Option>
-            <Option value="h3">h3</Option>
-            <Option value="h4">h4</Option>
-            <Option value="h5">h5</Option>
-            <Option value="h6">h6</Option>
-          </Select>
-
           <MainButtons>
             <CustomIconButton
               onClick={() => onActionClick("Bold", editorRef)}
@@ -189,14 +153,6 @@ const WysiwygNav: React.FC<WysiwygNavProps> = ({
               icon={<Underline />}
             />
           </MainButtons>
-
-          <MoreButton
-            ref={buttonMoreRef}
-            onClick={handleTogglePopover}
-            id="more"
-            label="More"
-            icon={<More />}
-          />
           {visiblePopover && (
             <Popover centered source={buttonMoreRef} spacing={4} id="popover">
               <FocusTrap onEscape={handleTogglePopover} restoreFocus={false}>

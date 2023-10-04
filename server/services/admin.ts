@@ -86,9 +86,12 @@ export = ({ strapi }: StrapiContext): IServiceAdmin => ({
     const entryLabel = getConfigProp<"entryLabel">("entryLabel");
     const approvalFlow = getConfigProp<"approvalFlow">("approvalFlow");
     const reportReasons = getConfigProp<"reportReasons">("reportReasons");
+    const blockedAuthorProps = getConfigProp<"blockedAuthorProps">("blockedAuthorProps");
+
     const result = {
       entryLabel,
       approvalFlow,
+      blockedAuthorProps,
       reportReasons,
       ...additionalConfiguration,
     };
@@ -208,9 +211,10 @@ export = ({ strapi }: StrapiContext): IServiceAdmin => ({
         filterOurResolvedReports(
           this.getCommonService().sanitizeCommentEntity(
             _,
-            defaultAuthorUserPopulate?.populate
-          )
-        )
+            [],
+            defaultAuthorUserPopulate?.populate,
+          ),
+        ),
       )
       .map((_) =>
         this.getCommonService().mergeRelatedEntityTo(_, relatedEntities)
@@ -319,10 +323,11 @@ export = ({ strapi }: StrapiContext): IServiceAdmin => ({
             related: this.getCommonService().sanitizeCommentEntity({
               ..._.related,
               gotThread: isCommentWithThread,
-            }),
+            }, []),
           },
-          defaultAuthorUserPopulate?.populate
-        )
+          [],
+          defaultAuthorUserPopulate?.populate,
+        ),
       );
     });
 
@@ -440,7 +445,8 @@ export = ({ strapi }: StrapiContext): IServiceAdmin => ({
         ...entity,
         threadOf: entity.threadOf || null,
       },
-      defaultAuthorUserPopulate?.populate
+      [],
+      defaultAuthorUserPopulate?.populate,
     );
 
     return {
@@ -465,7 +471,7 @@ export = ({ strapi }: StrapiContext): IServiceAdmin => ({
           blocked: !isNil(forceStatus) ? forceStatus : !existingEntity.blocked,
         },
       });
-    return this.getCommonService().sanitizeCommentEntity(changedEntity);
+    return this.getCommonService().sanitizeCommentEntity(changedEntity, []);
   },
 
   // Delete a comment
@@ -478,7 +484,7 @@ export = ({ strapi }: StrapiContext): IServiceAdmin => ({
           removed: true,
         },
       });
-    return this.getCommonService().sanitizeCommentEntity(changedEntity);
+    return this.getCommonService().sanitizeCommentEntity(changedEntity, []);
   },
 
   // Block / Unblock a comment thread
@@ -502,7 +508,7 @@ export = ({ strapi }: StrapiContext): IServiceAdmin => ({
       });
     await this.blockNestedThreads(id, changedEntity.blockedThread);
 
-    return this.getCommonService().sanitizeCommentEntity(changedEntity);
+    return this.getCommonService().sanitizeCommentEntity(changedEntity, []);
   },
 
   // Approve comment
@@ -514,7 +520,7 @@ export = ({ strapi }: StrapiContext): IServiceAdmin => ({
         data: { approvalStatus: APPROVAL_STATUS.APPROVED },
       });
 
-    return this.getCommonService().sanitizeCommentEntity(changedEntity);
+    return this.getCommonService().sanitizeCommentEntity(changedEntity, []);
   },
 
   async rejectComment(this: IServiceAdmin, id: Id): Promise<Comment> {
@@ -525,7 +531,7 @@ export = ({ strapi }: StrapiContext): IServiceAdmin => ({
         data: { approvalStatus: APPROVAL_STATUS.REJECTED },
       });
 
-    return this.getCommonService().sanitizeCommentEntity(changedEntity);
+    return this.getCommonService().sanitizeCommentEntity(changedEntity, []);
   },
 
   async blockNestedThreads(
@@ -745,7 +751,7 @@ export = ({ strapi }: StrapiContext): IServiceAdmin => ({
           content: body,
         },
       });
-    return this.getCommonService().sanitizeCommentEntity(updateComment);
+    return this.getCommonService().sanitizeCommentEntity(updateComment, []);
   },
 
   // Recognize Strapi User fields possible to populate
@@ -771,6 +777,6 @@ export = ({ strapi }: StrapiContext): IServiceAdmin => ({
       };
     }
 
-    return undefined;
+    return true;
   },
 });

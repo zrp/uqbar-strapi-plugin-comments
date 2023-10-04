@@ -17,7 +17,7 @@ import {
   ToBeFixed,
   ViewCommentsPluginConfig,
 } from "../../types";
-import { assertNotEmpty, getPluginService } from "./../utils/functions";
+import { assertNotEmpty, getPluginService } from "../utils/functions";
 import { parseParams, throwError } from "./utils/functions";
 
 const controllers: IControllerAdmin = {
