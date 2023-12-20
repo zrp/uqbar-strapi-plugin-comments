@@ -1,0 +1,21 @@
+name: Mirror Repository
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: git@github.com:uqbar-dev/strapi-plugin-comments.git
+          ssh_private_key: ${{ secrets.UQBAR_SSH_PRIVATE_KEY }}
