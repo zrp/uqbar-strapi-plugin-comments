@@ -1,3 +1,37 @@
+# [1.1.0](https://github.com/zrp/uqbar-strapi-plugin-comments/compare/v1.0.2...v1.1.0) (2023-12-20)
+
+
+### Bug Fixes
+
+* add types to Avatar component ([f12ea9c](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/f12ea9c236d791544d964827cd5b403233972e75))
+* author blocked props ([d9d0777](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/d9d0777c5f2ba6d6db51c4419a06a95c71192bf1))
+* author population ([#177](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/177)) ([5ba0d85](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/5ba0d859301abb9253aeec4e11a0a0db96b333a1))
+* change error 403 test ([99ec162](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/99ec162e8d004cec3ba63e470ffde5e6c0331b56))
+* custom field on existing entity ([#178](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/178)) ([5e6cc63](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/5e6cc63c4f0d6fbe55d458c64718316973650906))
+* fixed UserAvatar typing ([dd179c7](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/dd179c709a5e73a49261533df24dcf75f2f99e53))
+* fixes after merge ([3b9eee2](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/3b9eee2fdf9a294ba55124fef68d144d847f3de5))
+* issue [#199](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/199) - undeclared codemirror dependency causes build crash ([ccc1f98](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/ccc1f98260cd57ed3d63988f89cbebed2b77e48a))
+* issue [#201](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/201) fix the filtering by thread ([bdc292a](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/bdc292a6dfdefe985ae7774d07a042cb5fb0d598))
+* issue [#220](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/220), issue [#221](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/221) ([#222](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/222)) ([03d504a](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/03d504aa86ad7611bd6c1b25845b8c410c712e9a))
+* load only existing translations ([e0cea8d](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/e0cea8d0947dbe3c986ed1bed7d5ce54d6da6aff))
+* package.json outdated ([1ef26e5](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/1ef26e504e9f90a2f30d5f1504fc230167c0f8ed))
+* peer dependency ([50bd59c](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/50bd59c3931ba485a5ee9dc9945be5d03c33c7f5))
+* stick to older match-sorter dependency following strapi ([70dd408](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/70dd408aa9d3cee2f928c555e99bf79b82147fe4))
+* strapi 4.13 packages alignment ([#229](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/229)) ([3432cd2](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/3432cd229bd7235a21e29a2ee50f2f08f5065d84))
+* strapi v4.7.1 compatibility fix because of dependencies ([563f86c](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/563f86c40e310aa099a1602d5d374237f1ca5a84))
+* unused import removed ([ac7d47f](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/ac7d47fb23dc4057934cf9fc96dfff3a5a9b6a11))
+
+
+### Features
+
+* **api:** issue [#209](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/209) - find all by author ([e47684a](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/e47684adb2c3785c28eff20f008e80d736daf497))
+* author entity props blocking ([#186](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/186)) ([6134f1e](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/6134f1e3bb5e78ea7c7c3793d2d8835e0d737b15))
+* basic filters options added to Discover and Reports ([074d23a](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/074d23aa44ebe7a9fd47d24ee82384b19e7a4d7d))
+* comments custom field [CU-2tn2923] ([#157](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/157)) ([aaac8a0](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/aaac8a059e261f87b8a13b303d8d719474d60cc4)), closes [#158](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/158)
+* create reports page [CU-20rfmkv] ([#153](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/153)) ([15b9b57](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/15b9b575ab827ca4e87c99962e39da816cae05dd))
+* custom fields on server-side [CU-xhcmx-63] ([#161](https://github.com/zrp/uqbar-strapi-plugin-comments/issues/161)) ([a284d59](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/a284d595ee4d5e91a7607e4c999c4a2814f99638))
+* typescripted client service and controllers ([eddd4b3](https://github.com/zrp/uqbar-strapi-plugin-comments/commit/eddd4b316c6dbf65a15365f0a3ddcf186337e8f6))
+
 # [1.1.0](https://github.com/zrp/uqbar-strapi-plugin-comments/compare/v1.0.2...v1.1.0) (2023-10-04)
 
 
